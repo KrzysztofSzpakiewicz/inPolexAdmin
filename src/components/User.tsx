@@ -2,14 +2,11 @@
 
 import { useState } from 'react';
 
-type UserProps = {
-	id: number;
-	name: string;
-	email: string;
-	accountType: 'standard' | 'courier';
-};
+interface UserProps extends UserType {
+	onUpdateUser: (updatedUser: UserType) => void;
+}
 
-export default function User({ id, name, email, accountType }: UserProps) {
+export default function User({ id, name, email, accountType, onUpdateUser }: UserProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(name);
 	const [editedEmail, setEditedEmail] = useState(email);
@@ -37,6 +34,15 @@ export default function User({ id, name, email, accountType }: UserProps) {
 		setIsLoading(true);
 
 		setTimeout(() => {
+			const updatedUser = {
+				id,
+				name: editedName,
+				email: editedEmail,
+				accountType: editedAccountType,
+			}
+
+			onUpdateUser(updatedUser);
+
 			console.log('Zapisano zmiany:', {
 				id,
 				editedName,
@@ -50,8 +56,8 @@ export default function User({ id, name, email, accountType }: UserProps) {
 
 			setTimeout(() => {
 				setShowSuccessMessage(false);
-				setIsEditing(false);
 			}, 3000);
+			setIsEditing(false);
 		}, 2000);
 	};
 
