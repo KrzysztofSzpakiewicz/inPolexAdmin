@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'; // Importujemy Framer Motion
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+
 
 export default function Home() {
 	const [form, setForm] = useState({ username: '', password: '' });
@@ -26,6 +28,7 @@ export default function Home() {
 			// Symulujemy sprawdzenie danych logowania
 			if (form.username === 'admin' && form.password === 'admin') {
 				// Jeśli dane poprawne, animacja fade-out przed przekierowaniem
+				Cookies.set('authToken', 'token', {expires: 1});
 				setFadeOut(true);
 				setTimeout(() => {
 					router.push('/dashboard');
