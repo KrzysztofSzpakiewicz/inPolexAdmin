@@ -22,7 +22,6 @@ export default function Home() {
 		e.preventDefault();
 		setLoading(true); // Rozpoczynamy ładowanie
 		setError(''); // Resetujemy ewentualny błąd
-
 		// Symulujemy zapytanie do serwera
 		setTimeout(() => {
 			// Symulujemy sprawdzenie danych logowania
