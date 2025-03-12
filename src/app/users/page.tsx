@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import User from '../../components/User';
+import { UserType } from '@/dto';
+import React from 'react';
 
 const users: UserType[] = [
 	{
@@ -56,21 +58,23 @@ export default function UsersList() {
 	};
 
 	const updateUser = (updatedUser: UserType) => {
-		setFilteredUsers((prevUsers) => 
-			prevUsers.map((user) => user.id === updatedUser.id ? updatedUser : user)
+		setFilteredUsers((prevUsers) =>
+			prevUsers.map((user) =>
+				user.id === updatedUser.id ? updatedUser : user
+			)
 		);
-	}
+	};
 
 	return (
 		<div>
-			<h2 className="text-xl font-bold mb-4">Lista użytkowników</h2>
-			<div className="flex mb-4">
+			<h2 className='mb-4 text-xl font-bold'>Lista użytkowników</h2>
+			<div className='mb-4 flex'>
 				<input
-					type="text"
-					placeholder="Wyszukaj..."
+					type='text'
+					placeholder='Wyszukaj...'
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
-					className="border px-4 py-2 mr-2"
+					className='mr-2 border px-4 py-2'
 				/>
 				<select
 					value={searchField}
@@ -84,17 +88,17 @@ export default function UsersList() {
 								| 'accountType'
 						)
 					}
-					className="border px-4 py-2 mr-2"
+					className='mr-2 border px-4 py-2'
 				>
-					<option value="id">ID</option>
-					<option value="name">Imię</option>
-					<option value="email">E-mail</option>
-					<option value="surname">Nazwisko</option>
-					<option value="accountType">Typ konta</option>
+					<option value='id'>ID</option>
+					<option value='name'>Imię</option>
+					<option value='email'>E-mail</option>
+					<option value='surname'>Nazwisko</option>
+					<option value='accountType'>Typ konta</option>
 				</select>
 				<button
 					onClick={handleSearch}
-					className="bg-blue-500 text-white px-4 py-2"
+					className='bg-blue-500 px-4 py-2 text-white'
 				>
 					Szukaj
 				</button>
