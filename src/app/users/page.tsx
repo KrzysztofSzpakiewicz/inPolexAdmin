@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import User from '../../components/User';
 
-type UserType = {
-	id: number;
-	name: string;
-	email: string;
-	accountType: 'standard' | 'courier';
-};
-
 const users: UserType[] = [
 	{
 		id: 1,
@@ -62,6 +55,12 @@ export default function UsersList() {
 		setFilteredUsers(filtered);
 	};
 
+	const updateUser = (updatedUser: UserType) => {
+		setFilteredUsers((prevUsers) => 
+			prevUsers.map((user) => user.id === updatedUser.id ? updatedUser : user)
+		);
+	}
+
 	return (
 		<div>
 			<h2 className="text-xl font-bold mb-4">Lista użytkowników</h2>
@@ -107,6 +106,7 @@ export default function UsersList() {
 					name={user.name}
 					email={user.email}
 					accountType={user.accountType}
+					onUpdateUser={updateUser}
 				/>
 			))}
 		</div>
