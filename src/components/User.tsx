@@ -1,12 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import React from 'react';
+import { UserType } from '@/dto';
 
 interface UserProps extends UserType {
 	onUpdateUser: (updatedUser: UserType) => void;
 }
 
-export default function User({ id, name, email, accountType, onUpdateUser }: UserProps) {
+export default function User({
+	id,
+	name,
+	email,
+	accountType,
+	onUpdateUser,
+}: UserProps): React.JSX.Element {
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(name);
 	const [editedEmail, setEditedEmail] = useState(email);
@@ -20,12 +28,12 @@ export default function User({ id, name, email, accountType, onUpdateUser }: Use
 	const [isLoading, setIsLoading] = useState(false);
 	const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-	const handleEditClick = () => {
+	const handleEditClick: () => void = () => {
 		setAdminPassword('');
 		setIsEditing(true);
 	};
 
-	const handleSave = () => {
+	const handleSave: () => void = () => {
 		if (!adminPassword) {
 			alert('Podaj hasło administratora!');
 			return;
@@ -34,12 +42,12 @@ export default function User({ id, name, email, accountType, onUpdateUser }: Use
 		setIsLoading(true);
 
 		setTimeout(() => {
-			const updatedUser = {
+			const updatedUser: UserType = {
 				id,
 				name: editedName,
 				email: editedEmail,
 				accountType: editedAccountType,
-			}
+			};
 
 			onUpdateUser(updatedUser);
 
@@ -61,7 +69,7 @@ export default function User({ id, name, email, accountType, onUpdateUser }: Use
 		}, 2000);
 	};
 
-	const handleCancel = () => {
+	const handleCancel: () => void = () => {
 		setEditedName(name);
 		setEditedEmail(email);
 		setEditedAccountType(accountType);
@@ -70,115 +78,134 @@ export default function User({ id, name, email, accountType, onUpdateUser }: Use
 		setIsEditing(false);
 	};
 
-	const handleChange = <T,>(
+	const handleChange: <T>(
+		setter: React.Dispatch<React.SetStateAction<T>>,
+		field: string,
+		value: T
+	) => void = <T,>(
 		setter: React.Dispatch<React.SetStateAction<T>>,
 		field: string,
 		value: T
 	) => {
 		setter(value);
-		setModifiedFields((prev) => ({ ...prev, [field]: true }));
+		setModifiedFields(
+			(prev: {
+				name?: boolean;
+				email?: boolean;
+				accountType?: boolean;
+			}) => ({ ...prev, [field]: true })
+		);
 	};
 
-	const borderColor =
+	const borderColor: 'border-green-500' | 'border-blue-500' =
 		accountType === 'courier' ? 'border-green-500' : 'border-blue-500';
 
 	return (
 		<div
-			className={`bg-gray-700 p-4 rounded-lg mb-2 border-2 ${borderColor} flex justify-between items-center`}
+			className={`mb-2 rounded-lg border-2 bg-gray-700 p-4 ${borderColor} flex items-center justify-between`}
 		>
 			<div>
-				<h3 className="text-lg font-semibold">{name}</h3>
-				<p className="text-gray-300">{email}</p>
-				<p className="text-gray-400 text-sm">ID: {id}</p>
-				<p className="text-gray-400 text-sm">
+				<h3 className='text-lg font-semibold'>{name}</h3>
+				<p className='text-gray-300'>{email}</p>
+				<p className='text-sm text-gray-400'>ID: {id}</p>
+				<p className='text-sm text-gray-400'>
 					Typ konta: {accountType}
 				</p>
 			</div>
+
 			<button
 				onClick={handleEditClick}
-				className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-3 rounded"
+				className='rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600'
 			>
 				Edytuj
 			</button>
 
 			{/* Modal Edycji */}
 			{isEditing && !showSuccessMessage && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-gray-800 p-6 rounded-lg w-96 shadow-lg">
-						<h2 className="text-xl font-semibold text-white mb-4">
+				<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
+					<div className='w-96 rounded-lg bg-gray-800 p-6 shadow-lg'>
+						<h2 className='mb-4 text-xl font-semibold text-white'>
 							Edytuj użytkownika
 						</h2>
 
-						<label className="block text-gray-300">
+						<label className='block text-gray-300'>
 							Imię i nazwisko:
 						</label>
 						<input
-							type="text"
+							type='text'
 							value={editedName}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
 								handleChange(
 									setEditedName,
 									'name',
 									e.target.value
 								)
 							}
-							className={`w-full p-2 rounded bg-gray-700 border-2 ${modifiedFields.name ? 'border-yellow-500' : 'border-gray-600'}`}
+							className={`w-full rounded border-2 bg-gray-700 p-2 ${modifiedFields.name ? 'border-yellow-500' : 'border-gray-600'}`}
 						/>
 
-						<label className="block text-gray-300 mt-2">
+						<label className='mt-2 block text-gray-300'>
 							Email:
 						</label>
 						<input
-							type="email"
+							type='email'
 							value={editedEmail}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
 								handleChange(
 									setEditedEmail,
 									'email',
 									e.target.value
 								)
 							}
-							className={`w-full p-2 rounded bg-gray-700 border-2 ${modifiedFields.email ? 'border-yellow-500' : 'border-gray-600'}`}
+							className={`w-full rounded border-2 bg-gray-700 p-2 ${modifiedFields.email ? 'border-yellow-500' : 'border-gray-600'}`}
 						/>
 
-						<label className="block text-gray-300 mt-2">
+						<label className='mt-2 block text-gray-300'>
 							Typ konta:
 						</label>
 						<select
 							value={editedAccountType}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLSelectElement>
+							) =>
 								handleChange(
 									setEditedAccountType,
 									'accountType',
 									e.target.value as 'standard' | 'courier'
 								)
 							}
-							className={`w-full p-2 rounded bg-gray-700 border-2 ${modifiedFields.accountType ? 'border-yellow-500' : 'border-gray-600'}`}
+							className={`w-full rounded border-2 bg-gray-700 p-2 ${modifiedFields.accountType ? 'border-yellow-500' : 'border-gray-600'}`}
 						>
-							<option value="standard">Standard</option>
-							<option value="courier">Courier</option>
+							<option value='standard'>Standard</option>
+							<option value='courier'>Courier</option>
 						</select>
 
-						<label className="block text-gray-300 mt-2">
+						<label className='mt-2 block text-gray-300'>
 							Hasło administratora:
 						</label>
 						<input
-							type="password"
+							type='password'
 							value={adminPassword}
-							onChange={(e) => setAdminPassword(e.target.value)}
-							className="w-full p-2 rounded bg-gray-700 border-gray-600"
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => setAdminPassword(e.target.value)}
+							className='w-full rounded border-gray-600 bg-gray-700 p-2'
 						/>
 
-						<div className="flex gap-4 justify-center mt-4">
+						<div className='mt-4 flex justify-center gap-4'>
 							<button
 								onClick={handleSave}
-								className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded transition"
+								className='rounded bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700'
 							>
 								Zapisz
 							</button>
 							<button
 								onClick={handleCancel}
-								className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded transition"
+								className='rounded bg-red-600 px-6 py-2 text-white transition hover:bg-red-700'
 							>
 								Anuluj
 							</button>
@@ -189,21 +216,21 @@ export default function User({ id, name, email, accountType, onUpdateUser }: Use
 
 			{/* Kręciołek ładowania */}
 			{isLoading && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="text-white text-xl">Ładowanie...</div>
+				<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
+					<div className='text-xl text-white'>Ładowanie...</div>
 				</div>
 			)}
 
 			{/* Komunikat o zapisaniu zmian */}
 			{showSuccessMessage && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-gray-800 p-6 rounded-lg w-96 shadow-lg text-center">
-						<h2 className="text-xl font-semibold text-white mb-4">
+				<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
+					<div className='w-96 rounded-lg bg-gray-800 p-6 text-center shadow-lg'>
+						<h2 className='mb-4 text-xl font-semibold text-white'>
 							Zmiany zostały zapisane!
 						</h2>
 						<button
 							onClick={() => setShowSuccessMessage(false)}
-							className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded transition"
+							className='rounded bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700'
 						>
 							OK
 						</button>

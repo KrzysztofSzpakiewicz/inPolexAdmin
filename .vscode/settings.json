@@ -1,0 +1,18 @@
+{
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "always"
+	},
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"prettier.singleQuote": true,
+	"prettier.jsxSingleQuote": true,
+	"prettier.useTabs": true,
+	"prettier.tabWidth": 4,
+	"prettier.trailingComma": "es5",
+	"prettier.semi": true,
+	"prettier.endOfLine": "auto",
+	"prettier.arrowParens": "always",
+	"prettier.requireConfig": true,
+	"prettier.plugins": ["prettier-plugin-tailwindcss"]
+}

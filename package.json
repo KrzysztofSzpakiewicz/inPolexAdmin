@@ -1,30 +1,51 @@
 {
-  "name": "in-polex-admin",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "framer-motion": "^12.4.11",
-    "js-cookie": "^3.0.5",
-    "next": "15.2.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/js-cookie": "^3.0.6",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+	"name": "in-polex-admin",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"prepare": "husky"
+	},
+	"prettier": {
+		"plugins": [
+			"prettier-plugin-tailwindcss"
+		],
+		"singleQuote": true,
+		"jsxSingleQuote": true,
+		"useTabs": true,
+		"tabWidth": 4,
+		"trailingComma": "es5",
+		"semi": true,
+		"endOfLine": "auto",
+		"arrowParens": "always"
+	},
+	"dependencies": {
+		"framer-motion": "^12.4.11",
+		"js-cookie": "^3.0.5",
+		"next": "15.2.1",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"save-dev": "^0.0.1-security"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3",
+		"@next/eslint-plugin-next": "^15.2.2",
+		"@tailwindcss/postcss": "^4",
+		"@types/js-cookie": "^3.0.6",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"eslint": "^9.22.0",
+		"eslint-config-next": "^15.2.2",
+		"eslint-config-prettier": "^10.1.1",
+		"eslint-plugin-next": "^0.0.0",
+		"husky": "^9.1.7",
+		"prettier": "^3.5.3",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"tailwindcss": "^4",
+		"typescript": "^5"
+	}
 }

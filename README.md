@@ -4,6 +4,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server:
 
+npm install
+
+Make sure u have installed eslint and prettier as a VSCode extension
+Make usre your prettier configoration is correct with prettier configuration files
+
 ```bash
 npm run dev
 # or

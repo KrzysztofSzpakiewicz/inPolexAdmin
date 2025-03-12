@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import User from '../../components/User';
+import { UserType } from '@/dto';
+import React from 'react';
 
 const users: UserType[] = [
 	{
@@ -22,16 +24,16 @@ const users: UserType[] = [
 	},
 ];
 
-export default function UsersList() {
+export default function UsersList(): React.JSX.Element {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [searchField, setSearchField] = useState<
 		'id' | 'name' | 'email' | 'surname' | 'accountType'
 	>('id');
 	const [filteredUsers, setFilteredUsers] = useState<UserType[]>(users);
 
-	const handleSearch = () => {
-		const lowercasedQuery = searchQuery.toLowerCase();
-		const filtered = users.filter((user) => {
+	const handleSearch: () => void = () => {
+		const lowercasedQuery: string = searchQuery.toLowerCase();
+		const filtered: UserType[] = users.filter((user: UserType) => {
 			switch (searchField) {
 				case 'id':
 					return user.id.toString().includes(lowercasedQuery);
@@ -55,26 +57,32 @@ export default function UsersList() {
 		setFilteredUsers(filtered);
 	};
 
-	const updateUser = (updatedUser: UserType) => {
-		setFilteredUsers((prevUsers) => 
-			prevUsers.map((user) => user.id === updatedUser.id ? updatedUser : user)
+	const updateUser: (updatedUser: UserType) => void = (
+		updatedUser: UserType
+	) => {
+		setFilteredUsers((prevUsers: UserType[]) =>
+			prevUsers.map((user: UserType) =>
+				user.id === updatedUser.id ? updatedUser : user
+			)
 		);
-	}
+	};
 
 	return (
 		<div>
-			<h2 className="text-xl font-bold mb-4">Lista użytkowników</h2>
-			<div className="flex mb-4">
+			<h2 className='mb-4 text-xl font-bold'>Lista użytkowników</h2>
+			<div className='mb-4 flex'>
 				<input
-					type="text"
-					placeholder="Wyszukaj..."
+					type='text'
+					placeholder='Wyszukaj...'
 					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
-					className="border px-4 py-2 mr-2"
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setSearchQuery(e.target.value)
+					}
+					className='mr-2 border px-4 py-2'
 				/>
 				<select
 					value={searchField}
-					onChange={(e) =>
+					onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 						setSearchField(
 							e.target.value as
 								| 'id'
@@ -84,22 +92,22 @@ export default function UsersList() {
 								| 'accountType'
 						)
 					}
-					className="border px-4 py-2 mr-2"
+					className='mr-2 border px-4 py-2'
 				>
-					<option value="id">ID</option>
-					<option value="name">Imię</option>
-					<option value="email">E-mail</option>
-					<option value="surname">Nazwisko</option>
-					<option value="accountType">Typ konta</option>
+					<option value='id'>ID</option>
+					<option value='name'>Imię</option>
+					<option value='email'>E-mail</option>
+					<option value='surname'>Nazwisko</option>
+					<option value='accountType'>Typ konta</option>
 				</select>
 				<button
 					onClick={handleSearch}
-					className="bg-blue-500 text-white px-4 py-2"
+					className='bg-blue-500 px-4 py-2 text-white'
 				>
 					Szukaj
 				</button>
 			</div>
-			{filteredUsers.map((user) => (
+			{filteredUsers.map((user: UserType) => (
 				<User
 					key={user.id}
 					id={user.id}
