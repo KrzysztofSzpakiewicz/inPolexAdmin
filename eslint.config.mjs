@@ -13,12 +13,18 @@ const eslintConfig = [
 	...compat.config({
 		extends: [
 			'next/core-web-vitals',
+			'plugin:@typescript-eslint/recommended',
 			'next/typescript',
 			'prettier',
 			'plugin:react/recommended',
 			'plugin:prettier/recommended',
 		],
-		plugins: ['prettier'],
+		settings: {
+			react: {
+				version: 'detect',
+			},
+		},
+		plugins: ['prettier', '@typescript-eslint', 'react', 'react-hooks'],
 		rules: {
 			semi: ['error', 'always'], // Wymuszenie średników
 			quotes: ['error', 'single'], // Wymuszenie pojedynczych cudzysłowów
