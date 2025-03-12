@@ -5,7 +5,6 @@ import React from 'react';
 import { UserType } from '@/dto';
 
 interface UserProps extends UserType {
-	// eslint-disable-next-line no-unused-vars
 	onUpdateUser: (updatedUser: UserType) => void;
 }
 
@@ -15,7 +14,7 @@ export default function User({
 	email,
 	accountType,
 	onUpdateUser,
-}: UserProps) {
+}: UserProps): React.JSX.Element {
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedName, setEditedName] = useState(name);
 	const [editedEmail, setEditedEmail] = useState(email);
@@ -29,12 +28,12 @@ export default function User({
 	const [isLoading, setIsLoading] = useState(false);
 	const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-	const handleEditClick = () => {
+	const handleEditClick: () => void = () => {
 		setAdminPassword('');
 		setIsEditing(true);
 	};
 
-	const handleSave = () => {
+	const handleSave: () => void = () => {
 		if (!adminPassword) {
 			alert('Podaj hasło administratora!');
 			return;
@@ -43,7 +42,7 @@ export default function User({
 		setIsLoading(true);
 
 		setTimeout(() => {
-			const updatedUser = {
+			const updatedUser: UserType = {
 				id,
 				name: editedName,
 				email: editedEmail,
@@ -70,7 +69,7 @@ export default function User({
 		}, 2000);
 	};
 
-	const handleCancel = () => {
+	const handleCancel: () => void = () => {
 		setEditedName(name);
 		setEditedEmail(email);
 		setEditedAccountType(accountType);
@@ -79,16 +78,26 @@ export default function User({
 		setIsEditing(false);
 	};
 
-	const handleChange = <T,>(
+	const handleChange: <T>(
+		setter: React.Dispatch<React.SetStateAction<T>>,
+		field: string,
+		value: T
+	) => void = <T,>(
 		setter: React.Dispatch<React.SetStateAction<T>>,
 		field: string,
 		value: T
 	) => {
 		setter(value);
-		setModifiedFields((prev) => ({ ...prev, [field]: true }));
+		setModifiedFields(
+			(prev: {
+				name?: boolean;
+				email?: boolean;
+				accountType?: boolean;
+			}) => ({ ...prev, [field]: true })
+		);
 	};
 
-	const borderColor =
+	const borderColor: 'border-green-500' | 'border-blue-500' =
 		accountType === 'courier' ? 'border-green-500' : 'border-blue-500';
 
 	return (
@@ -125,7 +134,9 @@ export default function User({
 						<input
 							type='text'
 							value={editedName}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
 								handleChange(
 									setEditedName,
 									'name',
@@ -141,7 +152,9 @@ export default function User({
 						<input
 							type='email'
 							value={editedEmail}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) =>
 								handleChange(
 									setEditedEmail,
 									'email',
@@ -156,7 +169,9 @@ export default function User({
 						</label>
 						<select
 							value={editedAccountType}
-							onChange={(e) =>
+							onChange={(
+								e: React.ChangeEvent<HTMLSelectElement>
+							) =>
 								handleChange(
 									setEditedAccountType,
 									'accountType',
@@ -175,7 +190,9 @@ export default function User({
 						<input
 							type='password'
 							value={adminPassword}
-							onChange={(e) => setAdminPassword(e.target.value)}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => setAdminPassword(e.target.value)}
 							className='w-full rounded border-gray-600 bg-gray-700 p-2'
 						/>
 

@@ -6,20 +6,21 @@ import Users from '../users/page';
 import Cookies from 'js-cookie';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export default function Dashboard() {
+export default function Dashboard(): React.JSX.Element {
 	const [selectedContent, setSelectedContent] = useState('content1');
 	const [loading, setLoading] = useState(false);
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [fadeOut, setFadeOut] = useState<boolean>(false);
-	const router = useRouter();
+	const router: AppRouterInstance = useRouter();
 
 	useEffect(() => {
-		const token = Cookies.get('authToken');
+		const token: string | undefined = Cookies.get('authToken');
 		if (!token) router.push('/');
 	}, [router]);
 
-	const handleClick = (content: string) => {
+	const handleClick: (content: string) => void = (content: string) => {
 		if (selectedContent === content) return;
 
 		setLoading(true);
@@ -30,11 +31,11 @@ export default function Dashboard() {
 		}, 1800);
 	};
 
-	const handleLogout = () => {
+	const handleLogout: () => void = () => {
 		setShowLogoutModal(true);
 	};
 
-	const confirmLogout = () => {
+	const confirmLogout: () => void = () => {
 		setFadeOut(true);
 		setTimeout(() => {
 			Cookies.remove('authToken');
@@ -42,11 +43,11 @@ export default function Dashboard() {
 		}, 600);
 	};
 
-	const cancelLogout = () => {
+	const cancelLogout: () => void = () => {
 		setShowLogoutModal(false);
 	};
 
-	const renderContent = () => {
+	const renderContent: () => React.JSX.Element = () => {
 		switch (selectedContent) {
 			case 'content1':
 				return <Users />;

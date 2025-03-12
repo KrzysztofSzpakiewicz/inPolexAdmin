@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import React from 'react';
+import { NextFontWithVariable } from 'next/dist/compiled/@next/font';
 
-const geistSans = Geist({
+const geistSans: NextFontWithVariable = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
+const geistMono: NextFontWithVariable = Geist_Mono({
 	variable: '--font-geist-mono',
 	subsets: ['latin'],
 });
@@ -21,7 +22,8 @@ export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
-}>) {
+}>): React.JSX.Element {
+	// Jawny typ zwracany
 	return (
 		<html lang='en'>
 			<body

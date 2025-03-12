@@ -24,16 +24,16 @@ const users: UserType[] = [
 	},
 ];
 
-export default function UsersList() {
+export default function UsersList(): React.JSX.Element {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [searchField, setSearchField] = useState<
 		'id' | 'name' | 'email' | 'surname' | 'accountType'
 	>('id');
 	const [filteredUsers, setFilteredUsers] = useState<UserType[]>(users);
 
-	const handleSearch = () => {
-		const lowercasedQuery = searchQuery.toLowerCase();
-		const filtered = users.filter((user) => {
+	const handleSearch: () => void = () => {
+		const lowercasedQuery: string = searchQuery.toLowerCase();
+		const filtered: UserType[] = users.filter((user: UserType) => {
 			switch (searchField) {
 				case 'id':
 					return user.id.toString().includes(lowercasedQuery);
@@ -57,9 +57,11 @@ export default function UsersList() {
 		setFilteredUsers(filtered);
 	};
 
-	const updateUser = (updatedUser: UserType) => {
-		setFilteredUsers((prevUsers) =>
-			prevUsers.map((user) =>
+	const updateUser: (updatedUser: UserType) => void = (
+		updatedUser: UserType
+	) => {
+		setFilteredUsers((prevUsers: UserType[]) =>
+			prevUsers.map((user: UserType) =>
 				user.id === updatedUser.id ? updatedUser : user
 			)
 		);
@@ -73,12 +75,14 @@ export default function UsersList() {
 					type='text'
 					placeholder='Wyszukaj...'
 					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setSearchQuery(e.target.value)
+					}
 					className='mr-2 border px-4 py-2'
 				/>
 				<select
 					value={searchField}
-					onChange={(e) =>
+					onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 						setSearchField(
 							e.target.value as
 								| 'id'
@@ -103,7 +107,7 @@ export default function UsersList() {
 					Szukaj
 				</button>
 			</div>
-			{filteredUsers.map((user) => (
+			{filteredUsers.map((user: UserType) => (
 				<User
 					key={user.id}
 					id={user.id}

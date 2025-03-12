@@ -6,19 +6,24 @@ import { motion } from 'framer-motion'; // Importujemy Framer Motion
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import React from 'react';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
 	const [form, setForm] = useState({ username: '', password: '' });
 	const [loading, setLoading] = useState(false); // Stan animacji ładowania
 	const [error, setError] = useState(''); // Stan błędu
 	const [fadeOut, setFadeOut] = useState(false); // Stan do animacji fade-out
-	const router = useRouter();
+	const router: AppRouterInstance = useRouter();
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void = (
+		e: React.FormEvent<HTMLFormElement>
+	) => {
 		e.preventDefault();
 		setLoading(true); // Rozpoczynamy ładowanie
 		setError(''); // Resetujemy ewentualny błąd
