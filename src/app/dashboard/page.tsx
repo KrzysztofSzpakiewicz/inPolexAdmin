@@ -39,7 +39,7 @@ export default function Dashboard() {
 		setTimeout(() => {
 			Cookies.remove('authToken');
 			router.push('/');
-		}, 500);
+		}, 600);
 	};
 
 	const cancelLogout = () => {
