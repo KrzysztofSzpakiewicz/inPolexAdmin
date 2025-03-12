@@ -91,7 +91,6 @@ export default function Dashboard(): React.JSX.Element {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: fadeOut ? 0 : 1 }} // Fade-out zaczyna się po kliknięciu
 				transition={{ duration: 0.3 }}
-				// className="bg-gray-900 text-white p-8 rounded-xl w-96 shadow-lg"
 			>
 				<div className='flex min-h-screen'>
 					{/* Lewa strona - Menu */}

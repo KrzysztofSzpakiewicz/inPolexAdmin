@@ -25,3 +25,11 @@ body {
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+@theme {
+	--color-lightGray: #2C2B2B;
+	--color-darkGray: #232323;
+	--color-red: #BB0033;
+	--color-light: #D9D9D9;
+	--color-navyLight: #656768;
+}
