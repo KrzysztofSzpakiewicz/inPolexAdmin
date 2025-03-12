@@ -23,6 +23,7 @@
 		"arrowParens": "always"
 	},
 	"dependencies": {
+		"@hugeicons/react": "^1.0.4",
 		"framer-motion": "^12.4.11",
 		"js-cookie": "^3.0.5",
 		"next": "15.2.1",
