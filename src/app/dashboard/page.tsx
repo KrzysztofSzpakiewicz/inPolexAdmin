@@ -94,16 +94,21 @@ export default function Dashboard(): React.JSX.Element {
 			>
 				<div className='flex min-h-screen'>
 					{/* Lewa strona - Menu */}
-					<div className='flex w-64 flex-col gap-4 bg-gray-800 p-6 text-white'>
+					<div className='flex w-64 flex-col gap-4 bg-darkGray p-6 text-white'>
+						<div>
+							<img src='logo.svg'/>
+						</div>
 						<button
 							onClick={() => handleClick('content1')}
-							className={`rounded p-3 transition ${
-								selectedContent === 'content1'
-									? 'border-2 border-blue-500 bg-blue-700'
-									: 'bg-blue-600 hover:bg-blue-700'
-							}`}
+							className='flex items-center gap-2 rounded p-3 transition'
 						>
-							Users
+							<img src="user-group-02.svg" alt="Users" />
+							<span className={`relative font-montserrat font-semibold text-xl after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] after:bg-red after:transition-all after:duration-300 ${
+								selectedContent === 'content1' ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+								}`}
+							>
+								USERS
+							</span>
 						</button>
 						<button
 							onClick={() => handleClick('content2')}
