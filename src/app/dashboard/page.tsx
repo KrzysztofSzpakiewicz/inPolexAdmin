@@ -1,12 +1,5 @@
 'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Users from '../users/page';
-import Cookies from 'js-cookie';
-import { motion } from 'framer-motion';
 import React from 'react';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export default function Dashboard(): React.JSX.Element {
 	const [selectedContent, setSelectedContent] = useState('content1');

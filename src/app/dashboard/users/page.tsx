@@ -1,7 +1,9 @@
+'use client';
 import { useState } from 'react';
-import User from '../../components/User';
+
 import { UserType } from '@/dto';
 import React from 'react';
+import User from '@/components/User';
 
 const users: UserType[] = [
 	{

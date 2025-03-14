@@ -35,7 +35,7 @@ export default function Home(): React.JSX.Element {
 				Cookies.set('authToken', 'token', { expires: 1 });
 				setFadeOut(true);
 				setTimeout(() => {
-					router.push('/dashboard');
+					router.push('/dashboard'); // Przekierowanie do panelu
 				}, 300); // Dajemy 300ms na animację fade-out
 			} else {
 				// Jeśli dane niepoprawne, pokazujemy komunikat o błędzie
