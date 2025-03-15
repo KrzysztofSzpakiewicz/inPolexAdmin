@@ -71,16 +71,18 @@ export default function UsersList(): React.JSX.Element {
 
 	return (
 		<div>
-			<h2 className='mb-4 text-xl font-bold'>Lista użytkowników</h2>
+			<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
+				Users list:
+			</h2>
 			<div className='mb-4 flex'>
 				<input
 					type='text'
-					placeholder='Wyszukaj...'
+					placeholder='Search...'
 					value={searchQuery}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setSearchQuery(e.target.value)
 					}
-					className='mr-2 border px-4 py-2'
+					className='font-montserrat border-color-light mr-2 border px-4 py-2'
 				/>
 				<select
 					value={searchField}
@@ -94,19 +96,19 @@ export default function UsersList(): React.JSX.Element {
 								| 'accountType'
 						)
 					}
-					className='mr-2 border px-4 py-2'
+					className='borderpx-4 border-color-light font-montserrat mr-2 border py-2'
 				>
 					<option value='id'>ID</option>
-					<option value='name'>Imię</option>
+					<option value='name'>First name</option>
 					<option value='email'>E-mail</option>
-					<option value='surname'>Nazwisko</option>
-					<option value='accountType'>Typ konta</option>
+					<option value='surname'>Last name</option>
+					<option value='accountType'>Account type</option>
 				</select>
 				<button
 					onClick={handleSearch}
-					className='bg-blue-500 px-4 py-2 text-white'
+					className='bg-red font-montserrat text-light px-4 py-2 font-semibold'
 				>
-					Szukaj
+					Search
 				</button>
 			</div>
 			{filteredUsers.map((user: UserType) => (

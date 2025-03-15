@@ -1,50 +1,87 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-export default function NavBar(): React.JSX.Element {
-	const links = [
-		{ name: 'USERS', href: '/dashboard/users', icon: '' },
-		{ name: 'COURIERS', href: '/dashboard/couriers', icon: '' },
-		{ name: 'PACKAGES', href: '/dashboard/packages', icon: '' },
-		{ name: 'APP SETTINGS', href: '/dashboard/settings', icon: '' },
-		{ name: 'REPORTS', href: '/dashboard/reports', icon: '' },
+import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
+import DashboardButton from './DashboardButton';
+import Image from 'next/image';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
+interface NavBarProps {
+	showLogoutModal: (arg: boolean) => void;
+}
+
+interface Link {
+	name: string;
+	href: string;
+	icon: string;
+}
+
+export default function NavBar({
+	showLogoutModal,
+}: NavBarProps): React.JSX.Element {
+	const router: AppRouterInstance = useRouter();
+	const pathname: string = usePathname();
+
+	const links: Link[] = [
+		{ name: 'USERS', href: '/dashboard/users', icon: '/user-group-02.svg' },
+		{
+			name: 'COURIERS',
+			href: '/dashboard/couriers',
+			icon: '/truck-delivery-icon.svg',
+		},
+		{
+			name: 'PACKAGES',
+			href: '/dashboard/packages',
+			icon: '/package-icon.svg',
+		},
+		{
+			name: 'APP SETTINGS',
+			href: '/dashboard/settings',
+			icon: '/settings-icon.svg',
+		},
+		{ name: 'REPORTS', href: '/dashboard/reports', icon: '/file-01.svg' },
 	];
 
-	const [showLogoutModal, setShowLogoutModal] = useState(false);
-	const router = useRouter();
-	const handleLogout = () => {
-		setShowLogoutModal(true);
-	};
-	const confirmLogout = () => {
-		setShowLogoutModal(false);
-		router.push('/');
+	const handleLogout: () => void = (): void => {
+		showLogoutModal(true);
 	};
 
-	const cancelLogout = () => {
-		setShowLogoutModal(false);
-	};
 	return (
-		<div className='flex w-full flex-col gap-4 bg-gray-800 text-white'>
-			<Link href={'/dashboard'} className='bg-blue-600 hover:bg-blue-700'>
-				HOME
-			</Link>
-			{links.map((link) => (
-				<Link
-					href={link.href}
+		<div className='w-ful flex h-full flex-col gap-4 p-4 text-white'>
+			<div>
+				<Image width={210} height={20} src='/logo.svg' alt={'Logo'} />
+			</div>
+			<DashboardButton
+				key={'Home'}
+				onClick={() => router.push('/dashboard')}
+				imgSrc={'/home-09.svg'}
+				imgAlt={'home'}
+				buttonText={'HOME'}
+				selectedContent={pathname}
+				actualContent={'/dashboard'}
+			/>
+			{links.map((link: Link) => (
+				<DashboardButton
 					key={link.name}
-					className='bg-blue-600 hover:bg-blue-700'
-				>
-					{link.name}
-				</Link>
+					onClick={() => router.push(link.href)}
+					imgSrc={link.icon}
+					imgAlt={link.name}
+					buttonText={link.name}
+					selectedContent={pathname}
+					actualContent={link.href}
+				/>
 			))}
-			<button
-				onClick={handleLogout}
-				className='mt-6 w-full rounded bg-red-600 p-3 py-2 font-semibold text-white transition hover:bg-red-700'
-			>
-				LOGOUT
-			</button>
+			<div className='mt-auto'>
+				<DashboardButton
+					key={'Logout'}
+					onClick={handleLogout}
+					imgSrc={'/logout-02.svg'}
+					imgAlt={'Logout'}
+					buttonText={'LOGOUT'}
+					selectedContent={pathname}
+					actualContent={null}
+				/>
+			</div>
 		</div>
 	);
 }

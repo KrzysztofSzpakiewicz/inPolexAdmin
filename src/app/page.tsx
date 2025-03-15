@@ -96,7 +96,7 @@ export default function Home(): React.JSX.Element {
 						className='rounded border border-[#2c2b2b] bg-[#232323] py-3 font-semibold text-white transition hover:border-[#ab2337]'
 						disabled={loading} // Przyciski również wyłączone podczas ładowania
 					>
-						Zaloguj się
+						Sign in
 					</motion.button>
 
 					{/* Animacja ładowania */}
