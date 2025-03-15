@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { UserType } from '@/dto';
 import React from 'react';
 import User from '@/components/User';
+import Select from '@/components/Select';
 
 const users: UserType[] = [
 	{
@@ -69,12 +70,34 @@ export default function UsersList(): React.JSX.Element {
 		);
 	};
 
+	const selectOptions: { value: string; label: string }[] = [
+		{ value: 'id', label: 'ID' },
+		{ value: 'surname', label: 'Last name' },
+		{ value: 'name', label: 'First name' },
+		{ value: 'email', label: 'E-mail' },
+		{ value: 'accountType', label: 'Account type' },
+	];
+
 	return (
 		<div>
 			<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
 				Users list:
 			</h2>
 			<div className='mb-4 flex'>
+				<Select
+					value={searchField}
+					options={selectOptions}
+					onSelect={(value: string) =>
+						setSearchField(
+							value as
+								| 'id'
+								| 'name'
+								| 'email'
+								| 'surname'
+								| 'accountType'
+						)
+					}
+				/>
 				<input
 					type='text'
 					placeholder='Search...'
@@ -84,26 +107,7 @@ export default function UsersList(): React.JSX.Element {
 					}
 					className='font-montserrat border-color-light mr-2 border px-4 py-2'
 				/>
-				<select
-					value={searchField}
-					onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-						setSearchField(
-							e.target.value as
-								| 'id'
-								| 'name'
-								| 'email'
-								| 'surname'
-								| 'accountType'
-						)
-					}
-					className='borderpx-4 border-color-light font-montserrat mr-2 border py-2'
-				>
-					<option value='id'>ID</option>
-					<option value='name'>First name</option>
-					<option value='email'>E-mail</option>
-					<option value='surname'>Last name</option>
-					<option value='accountType'>Account type</option>
-				</select>
+
 				<button
 					onClick={handleSearch}
 					className='bg-red font-montserrat text-light px-4 py-2 font-semibold'
