@@ -124,7 +124,7 @@ export default function User({
 			{isEditing && !showSuccessMessage && (
 				<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
 					<div className='bg-lightGray w-96 rounded-lg p-6 shadow-lg'>
-						<h2 className='font-montserrat text-light font-montserrat mb-4 text-xl font-semibold'>
+						<h2 className='font-montserrat text-light mb-4 text-xl font-semibold'>
 							Edit user
 						</h2>
 
