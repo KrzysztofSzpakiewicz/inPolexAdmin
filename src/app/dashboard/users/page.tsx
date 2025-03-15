@@ -7,7 +7,6 @@ import User from '@/components/User';
 import Search from '@/components/Search';
 import Select from '@/components/Select';
 
-
 const users: UserType[] = [
 	{
 		id: 1,
@@ -86,7 +85,6 @@ export default function UsersList(): React.JSX.Element {
 				Users list:
 			</h2>
 			<div className='mb-4 flex'>
-
 				<Select
 					value={searchField}
 					options={selectOptions}
@@ -100,27 +98,9 @@ export default function UsersList(): React.JSX.Element {
 								| 'accountType'
 						)
 					}
-					className='borderpx-4 border-red font-montserrat mr-2 border-b-2 py-2'
-				>
-					<option value='id'>ID</option>
-					<option value='name'>First name</option>
-					<option value='email'>E-mail</option>
-					<option value='surname'>Last name</option>
-					<option value='accountType'>Account type</option>
-				</select>
+					//className='borderpx-4 border-red font-montserrat mr-2 border-b-2 py-2'
+				/>
 				<Search onSearch={setSearchQuery} placeholder='Search...' />
-
-				/>
-				<input
-					type='text'
-					placeholder='Search...'
-					value={searchQuery}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						setSearchQuery(e.target.value)
-					}
-					className='font-montserrat border-color-light mr-2 border px-4 py-2'
-				/>
-
 
 				<button
 					onClick={handleSearch}
