@@ -6,6 +6,7 @@ import React from 'react';
 import User from '@/components/User';
 import Search from '@/components/Search';
 import Select from '@/components/Select';
+import Link from 'next/link';
 
 const users: UserType[] = [
 	{
@@ -110,14 +111,15 @@ export default function UsersList(): React.JSX.Element {
 				</button>
 			</div>
 			{filteredUsers.map((user: UserType) => (
-				<User
-					key={user.id}
-					id={user.id}
-					name={user.name}
-					email={user.email}
-					accountType={user.accountType}
-					onUpdateUser={updateUser}
-				/>
+				<Link href={`/dashboard/users/${user.id}`} key={user.id}>
+					<User
+						id={user.id}
+						name={user.name}
+						email={user.email}
+						accountType={user.accountType}
+						onUpdateUser={updateUser}
+					/>
+				</Link>
 			))}
 		</div>
 	);
