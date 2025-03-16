@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 'use client';
 
 import Image from 'next/image';
