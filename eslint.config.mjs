@@ -101,6 +101,7 @@ const eslintConfig = [
 					SwitchCase: 1,
 				},
 			],
+			indent: 'off',
 		},
 	}),
 ];
