@@ -5,22 +5,27 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import React from 'react';
+import { LocationsType } from '@/app/dashboard/users/newUser/dataTypes';
 
-const defaultIcon = L.icon({
+const defaultIcon: L.Icon<L.IconOptions> = L.icon({
 	iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
 	iconSize: [25, 41],
 	iconAnchor: [12, 41],
 });
 
-function LocationPicker({ onLocationSelect }) {
+function LocationPicker({
+	onLocationSelect,
+}: {
+	onLocationSelect: (location: LocationsType) => void;
+}): null {
 	useMapEvents({
-		click(e) {
+		click(e: L.LeafletMouseEvent) {
 			const { lat, lng } = e.latlng;
 			fetch(
 				`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
 			)
-				.then((res) => res.json())
-				.then((data) => {
+				.then((res: Response) => res.json())
+				.then((data: { display_name?: string }) => {
 					onLocationSelect({
 						lat,
 						lng,
@@ -36,19 +41,27 @@ export default function MapModal({
 	onClose,
 	onConfirm,
 	initialLocations = [],
-}) {
+}: {
+	onClose: () => void;
+	onConfirm: (locations: LocationsType[]) => void;
+	initialLocations?: LocationsType[] | undefined;
+}): React.JSX.Element {
 	const [locations, setLocations] =
-		useState<{ lat: number; lng: number; address: string }[]>(
-			initialLocations
-		);
+		useState<LocationsType[]>(initialLocations);
 
-	const handleLocationSelect = (location) => {
-		setLocations((prev) => [...prev, location]);
+	const handleLocationSelect: (location: LocationsType) => void = (
+		location: LocationsType
+	) => {
+		setLocations((prev: LocationsType[]) => [...prev, location]);
 	};
 
-	const handleMarkerClick = (indexToRemove) => {
-		setLocations((prev) =>
-			prev.filter((_, index) => index !== indexToRemove)
+	const handleMarkerClick: (indexToRemove: number) => void = (
+		indexToRemove: number
+	) => {
+		setLocations((prev: LocationsType[]) =>
+			prev.filter(
+				(_: LocationsType, index: number) => index !== indexToRemove
+			)
 		);
 	};
 
@@ -63,7 +76,7 @@ export default function MapModal({
 				>
 					<TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
 					<LocationPicker onLocationSelect={handleLocationSelect} />
-					{locations.map((loc, index) => (
+					{locations.map((loc: LocationsType, index: number) => (
 						<Marker
 							key={index}
 							position={[loc.lat, loc.lng]}
@@ -75,7 +88,7 @@ export default function MapModal({
 					))}
 				</MapContainer>
 				<ul className='mt-4 max-h-40 overflow-y-auto'>
-					{locations.map((loc, index) => (
+					{locations.map((loc: LocationsType, index: number) => (
 						<li key={index} className='py-1 text-sm'>
 							{loc.address} ({loc.lat.toFixed(6)},{' '}
 							{loc.lng.toFixed(6)})

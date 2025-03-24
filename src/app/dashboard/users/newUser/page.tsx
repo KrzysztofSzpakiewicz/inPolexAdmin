@@ -1,63 +1,59 @@
 'use client';
 import { useState } from 'react';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
-import { UserType } from '@/dto';
 import React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-
+import {
+	LocationsType,
+	InputChangeEventType,
+	SelectChangeEventType,
+	NewUserType,
+} from '@/app/dashboard/users/newUser/dataTypes';
+import Cookies from 'js-cookie';
 const token: string | undefined = Cookies.get('authToken');
-
 export default function NewUser(): React.JSX.Element {
-	const router = useRouter();
-	const [autoIncrement, setAutoIncrement] = useState<boolean>(true);
-	const [id, setId] = useState<string>('');
 	const [firstName, setFirstName] = useState<string>('');
 	const [lastName, setLastName] = useState<string>('');
 	const [phoneNumber, setPhoneNumber] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
+	const [username, setUsername] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [showPassword, setShowPassword] = useState<boolean>(false); // Nowy stan do pokazywania/ukrywania hasła
 	const [verified, setVerified] = useState<boolean>(false);
 	const [role, setRole] = useState<
 		'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_COURIER'
 	>('ROLE_USER');
-	const [loading, setLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string | null>(null);
+
 	const [showMap, setShowMap] = useState<boolean>(false);
-	const [locations, setLocations] = useState<
-		{ lat: number; lng: number; address: string }[]
-	>([]);
+	const [locations, setLocations] = useState<LocationsType[]>([]);
 	const [editingIndex, setEditingIndex] = useState<number | null>(null);
 	const [editedAddress, setEditedAddress] = useState<string>('');
 
-	const MapModal = dynamic(() => import('./components/MapModal'), {
+	const MapModal: React.ComponentType<{
+		onClose: () => void;
+		onConfirm: (locations: LocationsType[]) => void;
+		initialLocations?: LocationsType[] | undefined;
+	}> = dynamic(() => import('./components/MapModal'), {
 		ssr: false,
 	});
 
-	const handlePhoneNumberChange = (
-		e: React.ChangeEvent<HTMLInputElement>
+	const handlePhoneNumberChange: (e: InputChangeEventType) => void = (
+		e: InputChangeEventType
 	) => {
-		const value = e.target.value;
+		const value: string = e.target.value;
 		if (/^\d*$/.test(value)) {
 			setPhoneNumber(value);
 		}
 	};
 
-	const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		if (/^\d*$/.test(value)) {
-			setId(value);
-		}
-	};
-
-	const startEditing = (index: number) => {
+	const startEditing: (index: number) => void = (index: number) => {
 		setEditingIndex(index);
 		setEditedAddress(locations[index].address);
 	};
 
-	const saveEditedAddress = (index: number) => {
-		setLocations((prev) =>
-			prev.map((loc, i) =>
+	const saveEditedAddress: (index: number) => void = (index: number) => {
+		setLocations((prev: LocationsType[]) =>
+			prev.map((loc: LocationsType, i: number) =>
 				i === index ? { ...loc, address: editedAddress } : loc
 			)
 		);
@@ -65,7 +61,43 @@ export default function NewUser(): React.JSX.Element {
 		setEditedAddress('');
 	};
 
-	const handleSubmit = () => {};
+	const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void = async (
+		e: React.FormEvent<HTMLFormElement>
+	) => {
+		e.preventDefault();
+		try {
+			const newUserData: NewUserType = {
+				firstName: firstName,
+				lastName: lastName,
+				username: username,
+				email: email,
+				password: password,
+				phoneNumber: phoneNumber,
+				verified: verified,
+				role: role,
+			};
+
+			const response: Response = await fetch('/api/user', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`, // Dodanie Bearer Token do nagłówków
+				},
+				body: JSON.stringify(newUserData),
+			});
+
+			console.log('Status odpowiedzi:', response.status);
+			if (response.status === 200) {
+				alert('chyba dodano');
+			} else {
+				alert('blad');
+				console.log('Błąd dodawania:', response.status);
+			}
+		} catch (err) {
+			alert('blad');
+			console.log('Błąd podczas logowania:', err);
+		}
+	};
 
 	return (
 		<div className='p-4'>
@@ -73,40 +105,7 @@ export default function NewUser(): React.JSX.Element {
 				Create New User
 			</h2>
 
-			{loading && <p>Loading...</p>}
-			{error && <p className='text-red-500'>{error}</p>}
-
 			<form onSubmit={handleSubmit} className='space-y-4'>
-				{/* Existing form fields remain unchanged */}
-				<div>
-					<label className='flex items-center space-x-2'>
-						<input
-							type='checkbox'
-							checked={autoIncrement}
-							onChange={(e) => setAutoIncrement(e.target.checked)}
-							className='form-checkbox'
-						/>
-						<span className='font-montserrat text-light'>
-							Auto Increment ID
-						</span>
-					</label>
-					{!autoIncrement && (
-						<div className='mt-2'>
-							<label className='font-montserrat text-light block'>
-								ID:
-							</label>
-							<input
-								type='text'
-								value={id}
-								onChange={handleIdChange}
-								className='w-full rounded border border-gray-300 px-3 py-2 text-black'
-								placeholder='Enter ID (numbers only)'
-								required={!autoIncrement}
-							/>
-						</div>
-					)}
-				</div>
-
 				<div>
 					<label className='font-montserrat text-light block'>
 						First Name:
@@ -114,7 +113,9 @@ export default function NewUser(): React.JSX.Element {
 					<input
 						type='text'
 						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
+						onChange={(e: InputChangeEventType) =>
+							setFirstName(e.target.value)
+						}
 						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
 						placeholder='Enter first name'
 						required
@@ -128,13 +129,29 @@ export default function NewUser(): React.JSX.Element {
 					<input
 						type='text'
 						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
+						onChange={(e: InputChangeEventType) =>
+							setLastName(e.target.value)
+						}
 						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
 						placeholder='Enter last name'
 						required
 					/>
 				</div>
-
+				<div>
+					<label className='font-montserrat text-light block'>
+						User Name:
+					</label>
+					<input
+						type='text'
+						value={username}
+						onChange={(e: InputChangeEventType) =>
+							setUsername(e.target.value)
+						}
+						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						placeholder='Enter last name'
+						required
+					/>
+				</div>
 				<div>
 					<label className='font-montserrat text-light block'>
 						Phone Number:
@@ -156,7 +173,9 @@ export default function NewUser(): React.JSX.Element {
 					<input
 						type='email'
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e: InputChangeEventType) =>
+							setEmail(e.target.value)
+						}
 						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
 						placeholder='Enter email'
 						required
@@ -165,11 +184,72 @@ export default function NewUser(): React.JSX.Element {
 
 				<div>
 					<label className='font-montserrat text-light block'>
+						Password:
+					</label>
+					<div className='relative'>
+						<input
+							type={showPassword ? 'text' : 'password'} // Przełączanie typu inputu
+							value={password}
+							onChange={(e: InputChangeEventType) =>
+								setPassword(e.target.value)
+							}
+							className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+							placeholder='Enter password'
+							required
+						/>
+						<button
+							type='button'
+							onClick={() => setShowPassword(!showPassword)}
+							className='absolute top-1/2 right-2 -translate-y-1/2 text-gray-500'
+						>
+							{showPassword ? (
+								<svg
+									className='h-5 w-5'
+									fill='none'
+									stroke='currentColor'
+									viewBox='0 0 24 24'
+								>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										strokeWidth='2'
+										d='M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21'
+									/>
+								</svg>
+							) : (
+								<svg
+									className='h-5 w-5'
+									fill='none'
+									stroke='currentColor'
+									viewBox='0 0 24 24'
+								>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										strokeWidth='2'
+										d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+									/>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										strokeWidth='2'
+										d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
+									/>
+								</svg>
+							)}
+						</button>
+					</div>
+				</div>
+
+				<div>
+					<label className='font-montserrat text-light block'>
 						Verified:
 					</label>
 					<select
 						value={verified.toString()}
-						onChange={(e) => setVerified(e.target.value === 'true')}
+						onChange={(e: SelectChangeEventType) =>
+							setVerified(e.target.value === 'true')
+						}
 						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
 					>
 						<option value='true'>True</option>
@@ -183,7 +263,7 @@ export default function NewUser(): React.JSX.Element {
 					</label>
 					<select
 						value={role}
-						onChange={(e) =>
+						onChange={(e: SelectChangeEventType) =>
 							setRole(
 								e.target.value as
 									| 'ROLE_ADMIN'
@@ -211,7 +291,7 @@ export default function NewUser(): React.JSX.Element {
 						Select Locations on Map
 					</button>
 					<ul className='mt-2 space-y-2'>
-						{locations.map((loc, index) => (
+						{locations.map((loc: LocationsType, index: number) => (
 							<li
 								key={index}
 								className='flex items-center space-x-2 text-black'
@@ -221,7 +301,9 @@ export default function NewUser(): React.JSX.Element {
 										<input
 											type='text'
 											value={editedAddress}
-											onChange={(e) =>
+											onChange={(
+												e: InputChangeEventType
+											) =>
 												setEditedAddress(e.target.value)
 											}
 											className='flex-grow rounded border border-gray-300 px-2 py-1 text-black'
@@ -285,11 +367,11 @@ export default function NewUser(): React.JSX.Element {
 			{showMap && (
 				<MapModal
 					onClose={() => setShowMap(false)}
-					onConfirm={(selectedLocations) => {
+					onConfirm={(selectedLocations: LocationsType[]) => {
 						setLocations(selectedLocations);
 						setShowMap(false);
 					}}
-					initialLocations={locations} // Pass existing locations to MapModal
+					initialLocations={locations}
 				/>
 			)}
 		</div>

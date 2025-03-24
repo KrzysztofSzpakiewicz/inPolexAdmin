@@ -6,6 +6,11 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import React from 'react';
+import {
+	LoginSuccessResponse,
+	InputChangeEventType,
+	LoginData,
+} from '@/app/dataTypes';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 export default function Home(): React.JSX.Element {
@@ -23,19 +28,21 @@ export default function Home(): React.JSX.Element {
 		}
 	}, [router]);
 
-	const handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-		e: React.ChangeEvent<HTMLInputElement>
+	const handleChange: (e: InputChangeEventType) => void = (
+		e: InputChangeEventType
 	) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit: (e) => Promise<void> = async (e) => {
+	const handleSubmit: (
+		e: React.FormEvent<HTMLFormElement>
+	) => Promise<void> = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setLoading(true);
 		setError('');
 
 		try {
-			const loginData = {
+			const loginData: LoginData = {
 				username: form.username,
 				email: '',
 				phoneNumber: '',
@@ -43,7 +50,7 @@ export default function Home(): React.JSX.Element {
 			};
 			console.log('Wysyłane dane:', loginData);
 
-			const response = await fetch('/api/auth/login', {
+			const response: Response = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -53,7 +60,7 @@ export default function Home(): React.JSX.Element {
 
 			console.log('Status odpowiedzi:', response.status);
 			if (response.status === 200) {
-				const data = await response.json();
+				const data: LoginSuccessResponse = await response.json();
 				console.log('Dane odpowiedzi:', data);
 				Cookies.set('authToken', data.token, { expires: 1 });
 				setFadeOut(true);
@@ -61,16 +68,12 @@ export default function Home(): React.JSX.Element {
 					router.push('/dashboard');
 				}, 300);
 			} else {
-				const errorData = await response.json();
-				console.log('Błąd odpowiedzi:', errorData);
-				setError(
-					errorData.message || 'Błędna nazwa użytkownika lub hasło'
-				);
+				console.log('Błąd logowania:', response.status);
 				setLoading(false);
 			}
 		} catch (err) {
-			console.error('Błąd podczas logowania:', err);
-			setError('Wystąpił błąd podczas logowania');
+			console.log('Błąd podczas logowania:', err);
+
 			setLoading(false);
 		}
 	};
@@ -99,7 +102,7 @@ export default function Home(): React.JSX.Element {
 					<input
 						type='text'
 						name='username'
-						placeholder='Email'
+						placeholder='Username'
 						className='rounded border border-[#2c2b2b] bg-[#232323] p-3 text-white focus:border-[#ab2337] focus:outline-none'
 						value={form.username}
 						onChange={handleChange}

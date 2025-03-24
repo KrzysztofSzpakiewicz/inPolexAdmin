@@ -3,30 +3,49 @@
 import Image from 'next/image';
 import React from 'react';
 import Cookies from 'js-cookie';
+//import Address from './components/Address';
+import {} from //AddressType,
+//UserPackagesType,
+//UserType,
+'@/app/dashboard/users/[userId]/dataTypes';
 import {
 	ReadonlyURLSearchParams,
+	//useRouter,
 	useSearchParams,
-	useRouter,
 } from 'next/navigation';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+//import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
+// const shipmentsTypes: string[] = [
+// 	'All',
+// 	'New',
+// 	'Waiting for',
+// 	'Transferring',
+// 	'On The Way',
+// 	'Delivered',
+// 	'Cancelled',
+// ];
 const token: string | undefined = Cookies.get('authToken');
-
 export default function User(): React.JSX.Element {
+	//const [sortBy, setSortBy] = React.useState<string>('All');
+	//const router: AppRouterInstance = useRouter();
 	const searchParams: ReadonlyURLSearchParams = useSearchParams();
-	const router: AppRouterInstance = useRouter(); // Added useRouter hook
 	const id: string | null = searchParams.get('id');
 	const firstName: string | null = searchParams.get('firstName');
 	const lastName: string | null = searchParams.get('lastName');
 	const username: string | null = searchParams.get('username');
-	const phoneNumber: string | null = searchParams.get('phoneNumber');
+	const phoneNumber: string | null = searchParams.get('phoneNumber'); //sprawdzic czy na pewno number
 	const verified: string | null = searchParams.get('verified');
 	const role: string | null = searchParams.get('role');
 	const email: string | null = searchParams.get('email');
+	// sortBy === 'All'
+	// 	? userData.packages
+	// 	: userData.packages.filter(
+	// 			(shipment: UserPackagesType) => shipment.status === sortBy
+	// 		);
 
 	const deleteUser: () => Promise<void> = async (): Promise<void> => {
 		try {
-			const response: Response = await fetch(`/api/user/${id}`, {
+			const response: Response = await fetch(`/api/user?${id}`, {
 				method: 'DELETE',
 				headers: {
 					Accept: '*/*',
@@ -37,24 +56,12 @@ export default function User(): React.JSX.Element {
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			if (response.status === 200) {
-				console.log('User deleted successfully');
-				router.push('/dashboard');
+			if (response.status == 200) {
 			} else {
 				console.log('error', response);
 			}
 		} catch (err) {
 			console.log('error', err);
-		}
-	};
-
-	const handleDeleteClick: () => void = (): void => {
-		const confirmed: boolean = window.confirm(
-			`Are you sure you want to delete user ${firstName} ${lastName}? This action cannot be undone.`
-		);
-
-		if (confirmed) {
-			deleteUser();
 		}
 	};
 
@@ -75,7 +82,7 @@ export default function User(): React.JSX.Element {
 				<div className='flex gap-4'>
 					<button
 						className='bg-red text-light rounded-md px-4 py-2 font-bold'
-						onClick={handleDeleteClick}
+						onClick={deleteUser}
 					>
 						DELETE
 					</button>
@@ -150,7 +157,69 @@ export default function User(): React.JSX.Element {
 						SHIPMENTS:
 					</div>
 					<div className='flex flex-wrap gap-2'>
-						{/* Rest of your shipments code */}
+						{/* {shipmentsTypes.map((type: string) => (
+							<div
+								key={type}
+								className={`bg-navyLight cursor-pointer rounded px-2 py-1 text-sm ${
+									sortBy === type
+										? 'border-red border-2'
+										: 'border-darkGray border-2'
+								}`}
+								onClick={() => setSortBy(type)}
+							>
+								{type}
+							</div>
+						))} */}
+						{/* <div className='flex w-full flex-col gap-2'>
+							{filteredShipments.map(
+								(shipment: UserPackagesType) => (
+									<div
+										key={shipment.shipmentId}
+										className='border-red flex gap-4 rounded-xl border-4 p-4'
+									>
+										{shipment.type === 'Incoming' ? (
+											<Image
+												alt='locationIcon'
+												src='/packageReceivedIcon.svg'
+												width={32}
+												height={32}
+											/>
+										) : (
+											<Image
+												alt='locationIcon'
+												src='/packageSentIcon.svg'
+												width={32}
+												height={32}
+											/>
+										)}
+										<div className='flex gap-4'>
+											<div className='flex flex-col gap-1'>
+												<p className='font-bold'>
+													Name:
+												</p>
+												<p className='font-bold'>
+													Number:
+												</p>
+												<p className='font-bold'>
+													Type:
+												</p>
+											</div>
+											<div className='flex flex-col gap-1'>
+												<p className='font-normal'>
+													{shipment.name}
+												</p>
+												<p className='font-normal'>
+													{shipment.shipmentId}
+												</p>
+												<p className='font-normal'>
+													{shipment.type}
+												</p>
+											</div>
+										</div>
+									</div>
+								)
+							)}
+						</div> */}
 					</div>
 				</div>
 			</div>

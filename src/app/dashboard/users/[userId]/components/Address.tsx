@@ -1,13 +1,5 @@
 import React from 'react';
-
-interface AddressType {
-	id: number;
-	country: string;
-	city: string;
-	street: string;
-	number: number;
-	postalCode: string;
-}
+import { AddressType } from '@/app/dashboard/users/[userId]/dataTypes';
 
 function Item({
 	header,
@@ -24,11 +16,11 @@ function Item({
 	);
 }
 
-interface AddressProps {
+export default function Address({
+	address,
+}: {
 	address: AddressType;
-}
-
-export default function Address({ address }: AddressProps): React.JSX.Element {
+}): React.JSX.Element {
 	return (
 		<div className='border-red flex w-4/5 flex-col gap-4 rounded-xl border-4 p-4'>
 			<div className='flex'>

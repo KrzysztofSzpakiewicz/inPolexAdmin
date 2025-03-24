@@ -1,26 +1,17 @@
 'use client';
 
-import { useState } from 'react';
 import React from 'react';
-import { UserType } from '@/dto';
-
-interface UserProps extends UserType {
-	onUpdateUser: (updatedUser: UserType) => void;
-}
+import { UserComponentType } from '@/app/dashboard/users/dataTypes';
 
 export default function User({
 	id,
 	firstName,
 	lastName,
-	username,
 	email,
-	phoneNumber,
-	verified,
 	role,
-}: UserProps): React.JSX.Element {
+}: UserComponentType): React.JSX.Element {
 	const borderColor: 'border-red' | 'border-light' =
 		role === 'ROLE_ADMIN' ? 'border-red' : 'border-light';
-
 	return (
 		<div
 			className={`bg-navyLight mb-2 rounded-lg border-2 p-4 ${borderColor} flex items-center justify-between`}
