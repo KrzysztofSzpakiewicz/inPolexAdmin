@@ -198,33 +198,34 @@ export default function UsersList(): React.JSX.Element {
 					)}
 				</div>
 			)}
-
-			{filteredUsers.map((user: UserType) => (
-				<Link
-					href={{
-						pathname: `/dashboard/users/${user.id}`,
-						query: {
-							id: user.id,
-							firstName: user.firstName,
-							lastName: user.lastName,
-							username: user.username,
-							phoneNumber: user.phoneNumber,
-							verified: user.verified,
-							role: user.role,
-							email: user.email,
-						},
-					}}
-					key={user.id}
-				>
-					<User
-						id={user.id}
-						firstName={user.firstName}
-						lastName={user.lastName}
-						role={user.role}
-						email={user.email}
-					/>
-				</Link>
-			))}
+			<div className='flex flex-wrap gap-4'>
+				{filteredUsers.map((user: UserType) => (
+					<Link
+						href={{
+							pathname: `/dashboard/users/${user.id}`,
+							query: {
+								id: user.id,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								username: user.username,
+								phoneNumber: user.phoneNumber,
+								verified: user.verified,
+								role: user.role,
+								email: user.email,
+							},
+						}}
+						key={user.id}
+					>
+						<User
+							id={user.id}
+							firstName={user.firstName}
+							lastName={user.lastName}
+							role={user.role}
+							email={user.email}
+						/>
+					</Link>
+				))}
+			</div>
 		</div>
 	);
 }
