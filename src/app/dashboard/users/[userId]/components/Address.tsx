@@ -1,37 +1,61 @@
 import React from 'react';
-import { AddressType } from '@/app/dashboard/users/[userId]/dataTypes';
-
-function Item({
-	header,
-	value,
-}: {
-	value: string;
-	header: string;
-}): React.JSX.Element {
-	return (
-		<div className='w-1/2'>
-			<p className='font-bold'>{header}</p>
-			<p className='text-sm font-semibold'>{value}</p>
-		</div>
-	);
-}
+import {
+	AddressType,
+	LabelAdresType,
+} from '@/app/dashboard/users/[userId]/dataTypes';
 
 export default function Address({
 	address,
+	onAddressChange,
+	editable,
 }: {
-	address: AddressType;
+	address: AddressType[];
+	editable: boolean;
+	onAddressChange: (
+		index: number,
+		key: keyof AddressType,
+		value: string | number
+	) => void;
 }): React.JSX.Element {
+	const labels: LabelAdresType = {
+		country: 'COUNTRY',
+		city: 'CITY',
+		street: 'STREET',
+		number: 'STREET NUMBER',
+		postalCode: 'POSTAL CODE',
+		apartment: 'APARTMENT',
+	};
+
 	return (
-		<div className='border-red flex w-4/5 flex-col gap-4 rounded-xl border-4 p-4'>
-			<div className='flex'>
-				<Item header={'COUNTRY'} value={address.country} />
-				<Item header={'CITY'} value={address.city} />
-			</div>
-			<div className='flex'>
-				<Item header={'STREET'} value={address.street} />
-				<Item header={'NUMBER'} value={address.number.toString()} />
-			</div>
-			<Item header={'POSTAL CODE'} value={address.postalCode} />
-		</div>
+		<>
+			{address.map((address: AddressType, index: number) => (
+				<div
+					className='border-red grid w-full grid-cols-2 gap-4 rounded-xl border-4 p-4'
+					key={index}
+				>
+					{(Object.keys(labels) as Array<keyof LabelAdresType>).map(
+						(key: keyof LabelAdresType) => (
+							<div className='flex flex-col' key={key}>
+								<p className='font-bold'>{labels[key]}</p>
+								<input
+									type={'text'}
+									value={address[key]}
+									disabled={!editable}
+									onChange={(
+										e: React.ChangeEvent<HTMLInputElement>
+									) =>
+										onAddressChange(
+											index,
+											key,
+											e.target.value
+										)
+									}
+								/>
+							</div>
+						)
+					)}
+				</div>
+			))}
+		</>
 	);
 }

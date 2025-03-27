@@ -18,17 +18,18 @@ export default function UsersList(): React.JSX.Element {
 	const [searchQuery, setSearchQuery] = useState<string>(''); // Zmieniono domyślną wartość na pusty ciąg
 	const [searchField, setSearchField] = useState<
 		| 'id'
+		| 'all'
 		| 'firstName'
 		| 'lastName'
 		| 'phoneNumber'
 		| 'email'
 		| 'verified'
 		| 'role'
-	>('id');
+	>('all');
 	const [filteredUsers, setFilteredUsers] = useState<UserType[]>(users);
 	const [currentPage, setCurrentPage] = useState<number>(0);
 	const [showPagination, setShowPagination] = useState<boolean>(false);
-	const pageSize: number = 5;
+	const pageSize: number = 10;
 
 	const addUser: () => void = () => {
 		router.push('/dashboard/users/newUser');
@@ -87,13 +88,14 @@ export default function UsersList(): React.JSX.Element {
 	};
 
 	const selectOptions: { value: string; label: string }[] = [
-		{ value: 'id', label: 'id' },
-		{ value: 'firstName', label: 'firstName' },
-		{ value: 'lastName', label: 'lastName' },
-		{ value: 'phoneNumber', label: 'phoneNumber' },
-		{ value: 'email', label: 'email' },
-		{ value: 'verified', label: 'verified' },
-		{ value: 'role', label: 'role' },
+		{ value: 'all', label: 'All' },
+		{ value: 'id', label: 'ID' },
+		{ value: 'firstName', label: 'First Name' },
+		{ value: 'lastName', label: 'Last Name' },
+		{ value: 'phoneNumber', label: 'Phone Number' },
+		{ value: 'email', label: 'Email' },
+		{ value: 'verified', label: 'Verified' },
+		{ value: 'role', label: 'Role' },
 	];
 
 	const roleOptions: { value: string; label: string }[] = [
@@ -140,7 +142,7 @@ export default function UsersList(): React.JSX.Element {
 			<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
 				Users list:
 			</h2>
-			<div className='mb-4 flex items-center gap-2'>
+			<div className='mb-4 flex items-end gap-2'>
 				<Select
 					value={searchField}
 					options={selectOptions}
@@ -198,9 +200,10 @@ export default function UsersList(): React.JSX.Element {
 					)}
 				</div>
 			)}
-			<div className='flex flex-wrap gap-4'>
+			<div className='grid grid-cols-2 gap-4'>
 				{filteredUsers.map((user: UserType) => (
 					<Link
+						className='w-full'
 						href={{
 							pathname: `/dashboard/users/${user.id}`,
 							query: {
