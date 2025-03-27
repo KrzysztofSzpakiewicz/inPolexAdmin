@@ -3,6 +3,7 @@ import {
 	AddressType,
 	LabelAdresType,
 } from '@/app/dashboard/users/[userId]/dataTypes';
+import Image from 'next/image';
 
 export default function Address({
 	address,
@@ -22,8 +23,8 @@ export default function Address({
 		city: 'CITY',
 		street: 'STREET',
 		number: 'STREET NUMBER',
-		postalCode: 'POSTAL CODE',
 		apartment: 'APARTMENT',
+		postalCode: 'POSTAL CODE',
 	};
 
 	return (
@@ -37,20 +38,31 @@ export default function Address({
 						(key: keyof LabelAdresType) => (
 							<div className='flex flex-col' key={key}>
 								<p className='font-bold'>{labels[key]}</p>
-								<input
-									type={'text'}
-									value={address[key]}
-									disabled={!editable}
-									onChange={(
-										e: React.ChangeEvent<HTMLInputElement>
-									) =>
-										onAddressChange(
-											index,
-											key,
-											e.target.value
-										)
-									}
-								/>
+								<div className='flex items-center justify-between'>
+									<input
+										className='max-w-40'
+										type={'text'}
+										value={address[key]}
+										disabled={!editable}
+										onChange={(
+											e: React.ChangeEvent<HTMLInputElement>
+										) =>
+											onAddressChange(
+												index,
+												key,
+												e.target.value
+											)
+										}
+									/>
+									{editable && (
+										<Image
+											alt='editIcon'
+											src='/editIcon.svg'
+											width={24}
+											height={24}
+										/>
+									)}
+								</div>
 							</div>
 						)
 					)}

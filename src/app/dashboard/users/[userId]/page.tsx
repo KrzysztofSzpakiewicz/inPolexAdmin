@@ -207,16 +207,26 @@ export default function User(): React.JSX.Element {
 							<table className='text-sm'>
 								<tbody>
 									<tr>
-										<td>ID:</td>
-										<td>{notModifableData?.id}</td>
+										<td className='w-40 py-0.5'>ID:</td>
+										<td className='py-0.5'>
+											{notModifableData?.id}
+										</td>
 									</tr>
 									<tr>
-										<td>USER NAME:</td>
-										<td>{notModifableData?.userName}</td>
+										<td className='max-w-32 py-0.5'>
+											USER NAME:
+										</td>
+										<td className='py-0.5'>
+											{notModifableData?.userName}
+										</td>
 									</tr>
 									<tr>
-										<td>EMAIL:</td>
-										<td>{notModifableData?.email}</td>
+										<td className='max-w-32 py-0.5'>
+											EMAIL:
+										</td>
+										<td className='py-0.5'>
+											{notModifableData?.email}
+										</td>
 									</tr>
 									{modifableData &&
 										(
@@ -224,9 +234,11 @@ export default function User(): React.JSX.Element {
 												keyof typeof labels
 											>
 										).map((key: keyof typeof labels) => (
-											<tr key={key}>
-												<td>{labels[key]}:</td>
-												<td>
+											<tr key={key} className='h-6'>
+												<td className='h-full max-w-32 py-0.5'>
+													{labels[key]}:
+												</td>
+												<td className='flex h-full items-center justify-between py-0.5'>
 													<input
 														type={
 															key === 'verified'
@@ -251,6 +263,7 @@ export default function User(): React.JSX.Element {
 																: undefined
 														}
 														disabled={!isEditing}
+														className={`${key === 'verified' ? 'w-auto' : 'w-full'} h-6 py-0.5`}
 														onChange={(
 															e: React.ChangeEvent<HTMLInputElement>
 														) =>
@@ -273,6 +286,14 @@ export default function User(): React.JSX.Element {
 															)
 														}
 													/>
+													{isEditing && (
+														<Image
+															alt='editIcon'
+															src='/editIcon.svg'
+															width={24}
+															height={24}
+														/>
+													)}
 												</td>
 											</tr>
 										))}
