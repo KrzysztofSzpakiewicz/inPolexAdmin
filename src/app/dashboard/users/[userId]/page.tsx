@@ -3,11 +3,7 @@
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import {
-	ReadonlyURLSearchParams,
-	useSearchParams,
-	useRouter,
-} from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
 	AddressType,
@@ -16,7 +12,6 @@ import {
 	UserFromServerType,
 } from './dataTypes';
 import Address from './components/Address';
-
 const token: string | undefined = Cookies.get('authToken');
 
 export default function User(): React.JSX.Element {
@@ -34,20 +29,22 @@ export default function User(): React.JSX.Element {
 
 	const [loading, setLoading] = React.useState<boolean>(true);
 
-	const searchParams: ReadonlyURLSearchParams = useSearchParams();
+	const [showDeleteModal, setShowDeleteModal] =
+		React.useState<boolean>(false);
+
 	const router: AppRouterInstance = useRouter(); // Added useRouter hook
-	const paramId: string | null = searchParams.get('id');
+	const { userId } = useParams();
 
 	useEffect(() => {
 		const fetchUserData: () => Promise<void> = async (): Promise<void> => {
 			try {
-				if (!paramId) {
+				if (!userId) {
 					setLoading(false);
 					return;
 				}
 
 				const response: Response = await fetch(
-					`/api/user/${paramId}/full`,
+					`/api/user/${userId}/full`,
 					{
 						method: 'GET',
 						headers: {
@@ -76,24 +73,37 @@ export default function User(): React.JSX.Element {
 		};
 
 		fetchUserData();
-	}, [paramId]);
+	}, [userId]);
+
+	const handleSetEditing: () => void = (): void => {
+		if (isEditing && userData) {
+			const { id, userName, email, ...rest } = userData;
+			setNotModifableData({ id, userName, email });
+			setModifableData((prev: ModifableUserDataType | null) =>
+				prev ? { ...prev, ...rest } : { ...rest }
+			);
+		}
+
+		setIsEditing(!isEditing);
+	};
 
 	const deleteUser: () => Promise<void> = async (): Promise<void> => {
 		try {
-			const response: Response = await fetch(`/api/user/${paramId}`, {
-				method: 'DELETE',
-				headers: {
-					Accept: '*/*',
-					Authorization: `Bearer ${token}`,
-				},
-			});
-
+			const response: Response = await fetch(
+				`/api/user/${userData?.id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						Accept: '*/*',
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 			if (response.status === 200) {
-				console.log('User deleted successfully');
-				router.push('/dashboard');
+				router.push('/dashboard/users');
 			} else {
 				console.log('error', response);
 			}
@@ -103,14 +113,11 @@ export default function User(): React.JSX.Element {
 	};
 
 	const handleDeleteClick: () => void = (): void => {
-		if (
-			userData &&
-			window.confirm(
-				`Are you sure you want to delete user ${userData.firstName} ${userData.lastName}? This action cannot be undone.`
-			)
-		) {
-			deleteUser();
-		}
+		setShowDeleteModal(true);
+	};
+
+	const cancelLogout: () => void = (): void => {
+		setShowDeleteModal(false);
 	};
 
 	const labels: {
@@ -160,8 +167,66 @@ export default function User(): React.JSX.Element {
 		});
 	};
 
+	const handleUpdateUser: () => Promise<void> = async (): Promise<void> => {
+		if (modifableData !== null) {
+			if (!notModifableData?.id) {
+				throw new Error('User ID is missing');
+			}
+
+			const updatedUserData: UserFromServerType = {
+				...notModifableData,
+				...modifableData,
+			};
+			try {
+				const response: Response = await fetch(
+					`/api/user/${userData?.id}/full`,
+					{
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify(updatedUserData),
+					}
+				);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				} else {
+					setUserData(updatedUserData);
+					setIsEditing(false);
+				}
+			} catch (err) {
+				console.error('Error updating user:', err);
+			}
+		}
+	};
+
 	return (
 		<div className='relative flex h-full w-full flex-col gap-4'>
+			{showDeleteModal && (
+				<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
+					<div className='bg-lightGray w-96 rounded-lg p-6 shadow-lg'>
+						<h2 className='text-light mb-4 text-center text-xl font-semibold'>
+							Are you sure you want to delete
+							{userData?.firstName} {userData?.lastName}?
+						</h2>
+						<div className='flex justify-center gap-4'>
+							<button
+								onClick={deleteUser}
+								className='bg-green rounded px-6 py-2 text-white transition hover:bg-green-800'
+							>
+								Yes
+							</button>
+							<button
+								onClick={cancelLogout}
+								className='bg-red rounded px-6 py-2 text-white transition hover:bg-red-600'
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			{loading && <p>Loading...</p>}
 			{userData && modifableData && (
 				<>
@@ -178,20 +243,38 @@ export default function User(): React.JSX.Element {
 								{modifableData.lastName}
 							</p>
 						</div>
-						<div className='flex gap-4'>
-							<button
-								className='bg-red text-light rounded-md px-4 py-2 font-bold'
-								onClick={handleDeleteClick}
-							>
-								DELETE
-							</button>
-							<button
-								className='text-light rounded-md bg-blue-500 px-4 py-2 font-bold'
-								onClick={() => setIsEditing(!isEditing)}
-							>
-								EDIT
-							</button>
-						</div>
+						{isEditing ? (
+							<div className='flex gap-4'>
+								<button
+									className='bg-red text-light rounded-md px-4 py-2 font-bold'
+									onClick={handleSetEditing}
+								>
+									CANCEL
+								</button>
+								<button
+									className='text-light rounded-md bg-green-700 px-4 py-2 font-bold'
+									onClick={handleUpdateUser}
+								>
+									SAVE
+								</button>
+							</div>
+						) : (
+							<div className='flex gap-4'>
+								<button
+									className='bg-red text-light rounded-md px-4 py-2 font-bold'
+									onClick={handleDeleteClick}
+								>
+									DELETE USER
+								</button>
+
+								<button
+									className='text-light rounded-md bg-blue-500 px-4 py-2 font-bold'
+									onClick={handleSetEditing}
+								>
+									EDIT
+								</button>
+							</div>
+						)}
 					</div>
 					<div className='flex justify-between'>
 						<div className='flex w-2/5 flex-col gap-4'>
@@ -240,12 +323,25 @@ export default function User(): React.JSX.Element {
 												</td>
 												<td className='flex h-full items-center justify-between py-0.5'>
 													<input
+														required
+														// maxLength={
+														// 	key ===
+														// 	'phoneNumber'
+														// 		? 9
+														// 		: undefined
+														// }
+														pattern={
+															key ===
+															'phoneNumber'
+																? '[0-9]{9}'
+																: undefined
+														}
 														type={
 															key === 'verified'
 																? 'checkbox'
 																: key ===
 																	  'phoneNumber'
-																	? 'number'
+																	? 'tel'
 																	: 'text'
 														}
 														checked={

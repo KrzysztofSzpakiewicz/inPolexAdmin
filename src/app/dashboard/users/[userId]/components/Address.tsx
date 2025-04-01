@@ -26,6 +26,7 @@ export default function Address({
 		apartment: 'APARTMENT',
 		postalCode: 'POSTAL CODE',
 	};
+	// console.log('address', address[0]);
 
 	return (
 		<>
@@ -40,6 +41,7 @@ export default function Address({
 								<p className='font-bold'>{labels[key]}</p>
 								<div className='flex items-center justify-between'>
 									<input
+										required
 										className='max-w-40'
 										type={'text'}
 										value={address[key]}
