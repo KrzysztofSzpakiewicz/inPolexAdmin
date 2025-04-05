@@ -16,7 +16,7 @@ export default function NewUser(): React.JSX.Element {
 	const [lastName, setLastName] = useState<string>('');
 	const [phoneNumber, setPhoneNumber] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
-	const [username, setUsername] = useState<string>('');
+	const [userName, setUserName] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false); // Nowy stan do pokazywania/ukrywania hasła
 	const [verified, setVerified] = useState<boolean>(false);
@@ -69,7 +69,7 @@ export default function NewUser(): React.JSX.Element {
 			const newUserData: NewUserType = {
 				firstName: firstName,
 				lastName: lastName,
-				username: username,
+				userName: userName,
 				email: email,
 				password: password,
 				phoneNumber: phoneNumber,
@@ -86,9 +86,7 @@ export default function NewUser(): React.JSX.Element {
 				body: JSON.stringify(newUserData),
 			});
 
-			console.log('Status odpowiedzi:', response.status);
 			if (response.status === 200) {
-				alert('chyba dodano');
 			} else {
 				alert('blad');
 				console.log('Błąd dodawania:', response.status);
@@ -102,7 +100,7 @@ export default function NewUser(): React.JSX.Element {
 	return (
 		<div className='p-4'>
 			<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
-				Create New User
+				CREATE NEW USER
 			</h2>
 
 			<form onSubmit={handleSubmit} className='space-y-4'>
@@ -116,7 +114,7 @@ export default function NewUser(): React.JSX.Element {
 						onChange={(e: InputChangeEventType) =>
 							setFirstName(e.target.value)
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 						placeholder='Enter first name'
 						required
 					/>
@@ -132,7 +130,7 @@ export default function NewUser(): React.JSX.Element {
 						onChange={(e: InputChangeEventType) =>
 							setLastName(e.target.value)
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 						placeholder='Enter last name'
 						required
 					/>
@@ -143,11 +141,11 @@ export default function NewUser(): React.JSX.Element {
 					</label>
 					<input
 						type='text'
-						value={username}
+						value={userName}
 						onChange={(e: InputChangeEventType) =>
-							setUsername(e.target.value)
+							setUserName(e.target.value)
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 						placeholder='Enter last name'
 						required
 					/>
@@ -160,7 +158,7 @@ export default function NewUser(): React.JSX.Element {
 						type='text'
 						value={phoneNumber}
 						onChange={handlePhoneNumberChange}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 						placeholder='Enter phone number (numbers only)'
 						required
 					/>
@@ -176,7 +174,7 @@ export default function NewUser(): React.JSX.Element {
 						onChange={(e: InputChangeEventType) =>
 							setEmail(e.target.value)
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 						placeholder='Enter email'
 						required
 					/>
@@ -193,7 +191,7 @@ export default function NewUser(): React.JSX.Element {
 							onChange={(e: InputChangeEventType) =>
 								setPassword(e.target.value)
 							}
-							className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+							className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 							placeholder='Enter password'
 							required
 						/>
@@ -250,7 +248,7 @@ export default function NewUser(): React.JSX.Element {
 						onChange={(e: SelectChangeEventType) =>
 							setVerified(e.target.value === 'true')
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 					>
 						<option value='true'>True</option>
 						<option value='false'>False</option>
@@ -271,7 +269,7 @@ export default function NewUser(): React.JSX.Element {
 									| 'ROLE_COURIER'
 							)
 						}
-						className='w-full rounded border border-gray-300 px-3 py-2 text-black'
+						className='text-light placeholder-light w-full rounded border border-gray-300 px-3 py-2'
 					>
 						<option value='ROLE_ADMIN'>ROLE_ADMIN</option>
 						<option value='ROLE_USER'>ROLE_USER</option>

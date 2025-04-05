@@ -3,20 +3,10 @@ import {
 	AddressType,
 	LabelAdresType,
 } from '@/app/dashboard/users/[userId]/dataTypes';
-import Image from 'next/image';
-
 export default function Address({
 	address,
-	onAddressChange,
-	editable,
 }: {
 	address: AddressType[];
-	editable: boolean;
-	onAddressChange: (
-		index: number,
-		key: keyof AddressType,
-		value: string | number
-	) => void;
 }): React.JSX.Element {
 	const labels: LabelAdresType = {
 		country: 'COUNTRY',
@@ -40,30 +30,7 @@ export default function Address({
 							<div className='flex flex-col' key={key}>
 								<p className='font-bold'>{labels[key]}</p>
 								<div className='flex items-center justify-between'>
-									<input
-										required
-										className='max-w-40'
-										type={'text'}
-										value={address[key]}
-										disabled={!editable}
-										onChange={(
-											e: React.ChangeEvent<HTMLInputElement>
-										) =>
-											onAddressChange(
-												index,
-												key,
-												e.target.value
-											)
-										}
-									/>
-									{editable && (
-										<Image
-											alt='editIcon'
-											src='/editIcon.svg'
-											width={24}
-											height={24}
-										/>
-									)}
+									<p>{address[key]}</p>
 								</div>
 							</div>
 						)

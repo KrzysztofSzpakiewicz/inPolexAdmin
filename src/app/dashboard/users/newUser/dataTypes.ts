@@ -11,7 +11,7 @@ export type SelectChangeEventType = React.ChangeEvent<HTMLSelectElement>;
 export type NewUserType = {
 	firstName: string;
 	lastName: string;
-	username: string;
+	userName: string;
 	password: string;
 	phoneNumber: string | null;
 	email: string;
