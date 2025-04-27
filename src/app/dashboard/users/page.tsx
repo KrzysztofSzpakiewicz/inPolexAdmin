@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -35,38 +35,51 @@ export default function UsersList(): React.JSX.Element {
 		router.push('/dashboard/users/newUser');
 	};
 
-	const fetchUsers: (page: number) => Promise<void> = async (
-		page: number
-	): Promise<void> => {
-		try {
-			// Używamy pustego ciągu, jeśli searchQuery jest undefined lub null
-			const queryString: string = `field=${searchField}&query=${encodeURIComponent(searchQuery || '')}&page=${page}&size=${pageSize}`;
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-			const response: Response = await fetch(`/api/user?${queryString}`, {
-				method: 'GET',
-				headers: {
-					Accept: '*/*',
-					Authorization: `Bearer ${token}`,
-				},
-			});
+	const fetchUsers: (page: number) => Promise<void> = useCallback(
+		async (page: number): Promise<void> => {
+			setIsLoading(true);
+			try {
+				const queryString: string = `field=${searchField}&query=${encodeURIComponent(searchQuery || '')}&page=${page}&size=${pageSize}`;
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+				const response: Response = await fetch(
+					`/api/user?${queryString}`,
+					{
+						method: 'GET',
+						headers: {
+							Accept: '*/*',
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+
+				const data: UsersFromServerType = await response.json();
+				setFilteredUsers(data.content);
+
+				if (data.content.length > 0) {
+					setShowPagination(true);
+				} else {
+					setShowPagination(false);
+				}
+			} catch (err) {
+				console.log('error', err);
+				setFilteredUsers([]);
+			} finally {
+				setIsLoading(false);
 			}
+		},
+		[searchField, searchQuery, pageSize, token]
+	);
 
-			const data: UsersFromServerType = await response.json();
-			setFilteredUsers(data.content);
-
-			if (data.content.length > 0) {
-				setShowPagination(true);
-			} else {
-				setShowPagination(false);
-			}
-		} catch (err) {
-			console.log('error', err);
-			setFilteredUsers([]);
-		}
-	};
+	React.useEffect(() => {
+		fetchUsers(0); // Fetch users only once on page load
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleSearch: () => Promise<void> = async (): Promise<void> => {
 		setCurrentPage(0);
@@ -138,11 +151,26 @@ export default function UsersList(): React.JSX.Element {
 	};
 
 	return (
-		<div>
-			<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
-				Users list:
-			</h2>
-			<div className='mb-4 flex items-end gap-2'>
+		<div className='flex flex-col gap-4'>
+			{isLoading && (
+				<div className='bg-opacity-50 fixed inset-0 flex items-center justify-center bg-black'>
+					<div className='mt-4 flex justify-center'>
+						<div className='h-8 w-8 animate-spin rounded-full border-t-4 border-solid border-[#ab2337]'></div>
+					</div>
+				</div>
+			)}
+			<div className='flex items-center justify-between'>
+				<h2 className='font-montserrat text-light flex items-center text-xl font-bold'>
+					Users list:
+				</h2>
+				<button
+					onClick={addUser}
+					className='bg-red font-montserrat text-light rounded-xl px-4 py-2 font-semibold transition hover:scale-105'
+				>
+					ADD NEW USER
+				</button>
+			</div>
+			<div className='flex items-end gap-2'>
 				<Select
 					value={searchField}
 					options={selectOptions}
@@ -163,23 +191,11 @@ export default function UsersList(): React.JSX.Element {
 
 				<button
 					onClick={handleSearch}
-					className='bg-red font-montserrat text-light px-4 py-2 font-semibold'
+					className='bg-red font-montserrat text-light rounded-xl px-4 py-2 font-semibold transition hover:scale-105'
 				>
-					Get Users
-				</button>
-
-				<button
-					onClick={addUser}
-					className='bg-red font-montserrat text-light px-4 py-2 font-semibold'
-				>
-					Add user
-				</button>
-
-				<button className='bg-red font-montserrat text-light px-4 py-2 font-semibold'>
-					Refresh
+					SEARCH
 				</button>
 			</div>
-
 			{showPagination && (
 				<div className='mb-4 flex gap-2'>
 					{currentPage > 0 && (

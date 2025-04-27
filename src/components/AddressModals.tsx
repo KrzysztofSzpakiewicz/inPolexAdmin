@@ -111,7 +111,7 @@ export default function UserAddresses({
 	};
 
 	return (
-		<div className='flex w-full flex-col items-start gap-4 p-4'>
+		<div className='flex max-h-3/4 w-full flex-col items-start gap-4 p-4'>
 			{addresses.map((address: Address, index: number) => {
 				const isHovered: boolean = hoveredIndex === index;
 				return (

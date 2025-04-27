@@ -117,7 +117,7 @@ export default function User(): React.JSX.Element {
 	};
 
 	return (
-		<div className='relative flex h-full w-full flex-col gap-4'>
+		<div className=''>
 			{/* MODAL ŁADOWANIA */}
 			{loading && (
 				<div className='bg-opacity-50 fixed inset-0 flex items-center justify-center bg-black'>
@@ -161,36 +161,50 @@ export default function User(): React.JSX.Element {
 				<>
 					{/* TOP BAR */}
 					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-4'>
-							<Image
-								alt='userIcon'
-								src='/userIcon.svg'
-								width={64}
-								height={64}
-							/>
-							<p className='text-4xl font-bold'>
-								{fetchedUserData.firstName}{' '}
-								{fetchedUserData.lastName}
-							</p>
+						<div className='flex items-center gap-4 transition hover:scale-105'>
+							<button
+								className='flex items-center'
+								onClick={() => router.push('/dashboard/users')}
+							>
+								<Image
+									alt='arrowBack'
+									src='/arrowBack.svg'
+									width={32}
+									height={32}
+								/>
+								GO BACK
+							</button>
 						</div>
 
 						<div className='flex gap-4'>
 							<button
-								className='bg-red text-light rounded-md px-4 py-2 font-bold'
+								className='bg-red text-light rounded-md px-4 py-2 font-bold hover:bg-red-600'
 								onClick={() => setIsDeleteModalOpen(true)}
 							>
 								DELETE USER
 							</button>
 
 							<button
-								className='text-light rounded-md bg-blue-500 px-4 py-2 font-bold'
+								className='text-light rounded-md bg-blue-600 px-4 py-2 font-bold hover:bg-blue-700'
 								onClick={handleEditUser}
 							>
 								EDIT
 							</button>
 						</div>
 					</div>
-					<div className='flex justify-between'>
+					<div className='flex items-center gap-4'>
+						<Image
+							alt='userIcon'
+							src='/userIcon.svg'
+							width={64}
+							height={64}
+						/>
+						<p className='text-4xl font-bold'>
+							{fetchedUserData.firstName}{' '}
+							{fetchedUserData.lastName}
+						</p>
+					</div>
+					<div className='flex justify-between p-4'>
 						<div className='flex w-2/5 flex-col gap-4'>
 							<div className='flex items-center gap-4 text-xl font-bold'>
 								<Image

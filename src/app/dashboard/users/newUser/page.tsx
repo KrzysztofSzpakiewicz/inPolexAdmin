@@ -13,6 +13,7 @@ const token: string | undefined = Cookies.get('authToken');
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import UserAddresses from '@/components/AddressModals';
 import { Address } from '@/components/Addresses/dataTypes';
+import Image from 'next/image';
 
 export default function NewUser(): React.JSX.Element {
 	const router: AppRouterInstance = useRouter();
@@ -69,12 +70,21 @@ export default function NewUser(): React.JSX.Element {
 	};
 
 	return (
-		<div className='p-4'>
-			<div className='mb-4 flex flex-row justify-between'>
-				<h2 className='font-montserrat text-light mb-4 text-xl font-bold'>
-					CREATE NEW USER
-				</h2>
-				<div className='flex gap-2'>
+		<div className=''>
+			<div className='flex items-center justify-between'>
+				<button
+					className='flex items-center transition hover:scale-105'
+					onClick={() => router.push('/dashboard/users')}
+				>
+					<Image
+						alt='arrowBack'
+						src='/arrowBack.svg'
+						width={32}
+						height={32}
+					/>
+					GO BACK
+				</button>
+				<div className='flex gap-4'>
 					<button
 						className='rounded-xl bg-red-600 px-4 py-2 font-bold'
 						onClick={handleCancel}
@@ -90,12 +100,30 @@ export default function NewUser(): React.JSX.Element {
 					</button>
 				</div>
 			</div>
+			<div className='flex items-center gap-4'>
+				<Image
+					alt='userIcon'
+					src='/userIcon.svg'
+					width={64}
+					height={64}
+				/>
+				<p className='text-3xl font-bold'>CREATE NEW USER</p>
+			</div>
 			<div className='flex gap-4'>
 				<form
 					onSubmit={handleSubmit}
 					className='flex w-1/2 flex-col gap-4 p-4'
 					id='userDataForm'
 				>
+					<div className='flex items-center gap-4 text-xl font-bold'>
+						<Image
+							alt='userIcon'
+							src='/infoIcon.svg'
+							width={24}
+							height={24}
+						/>
+						USER INFO:
+					</div>
 					<Input
 						type='text'
 						value={firstName}
@@ -161,7 +189,7 @@ export default function NewUser(): React.JSX.Element {
 								onChange={(e: SelectChangeEventType) =>
 									setVerified(e.target.value === 'true')
 								}
-								className='text-light w-full appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
+								className='text-light w-64 appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
 							>
 								<option className='bg-navyLight' value='true'>
 									True
@@ -188,7 +216,7 @@ export default function NewUser(): React.JSX.Element {
 											| 'ROLE_COURIER'
 									)
 								}
-								className='text-light w-full appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
+								className='text-light w-64 appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
 							>
 								<option
 									className='bg-navyLight'
@@ -214,7 +242,16 @@ export default function NewUser(): React.JSX.Element {
 					</div>
 				</form>
 
-				<div className='w-1/2'>
+				<div className='w-1/2 p-4'>
+					<div className='flex items-center gap-4 text-xl font-bold'>
+						<Image
+							alt='locationIcon'
+							src='/locationIcon.svg'
+							width={24}
+							height={24}
+						/>
+						USER ADDRESSES:
+					</div>
 					<UserAddresses
 						addresses={userAddresses}
 						onAddressesChange={setUserAddresses}
