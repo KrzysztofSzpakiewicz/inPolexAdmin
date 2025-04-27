@@ -43,7 +43,7 @@ export default function Home(): React.JSX.Element {
 
 		try {
 			const loginData: LoginData = {
-				username: form.username,
+				userName: form.username,
 				email: '',
 				phoneNumber: '',
 				password: form.password,

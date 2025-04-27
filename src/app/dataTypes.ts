@@ -15,7 +15,7 @@ export interface LoginSuccessResponse {
 }
 
 export interface LoginData {
-	username: string;
+	userName: string;
 	email: string;
 	phoneNumber: string;
 	password: string;

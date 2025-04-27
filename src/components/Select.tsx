@@ -35,14 +35,14 @@ export default function Select({
 	};
 
 	return (
-		<div className='border-red relative mr-2 w-36 border-b-2'>
+		<div className='border-red relative mr-2 w-40 border-b-2'>
 			<button
 				onClick={() => setIsOpen(!isOpen)}
 				className='flex h-full w-full items-center justify-between p-0.5'
 			>
 				{selected?.label}
 				<Image
-					src='/arrowDown.svg'
+					src='/arrows/arrowDown.svg'
 					alt='arrowDown'
 					width={24}
 					height={24}

@@ -1,37 +1,30 @@
 import React from 'react';
-import { AddressType } from '@/app/dashboard/users/[userId]/dataTypes';
+import { AddressLabelType, AddressPropsType } from '../dataTypes';
 
-function Item({
-	header,
-	value,
-}: {
-	value: string;
-	header: string;
-}): React.JSX.Element {
-	return (
-		<div className='w-1/2'>
-			<p className='font-bold'>{header}</p>
-			<p className='text-sm font-semibold'>{value}</p>
-		</div>
-	);
-}
+const labels: AddressLabelType = {
+	country: 'COUNTRY',
+	city: 'CITY',
+	street: 'STREET',
+	number: 'STREET NUMBER',
+	apartment: 'APARTMENT',
+	postalCode: 'POSTAL CODE',
+};
 
 export default function Address({
 	address,
-}: {
-	address: AddressType;
-}): React.JSX.Element {
+}: AddressPropsType): React.JSX.Element {
 	return (
-		<div className='border-red flex w-4/5 flex-col gap-4 rounded-xl border-4 p-4'>
-			<div className='flex'>
-				<Item header={'COUNTRY'} value={address.country} />
-				<Item header={'CITY'} value={address.city} />
-			</div>
-			<div className='flex'>
-				<Item header={'STREET'} value={address.street} />
-				<Item header={'NUMBER'} value={address.number.toString()} />
-			</div>
-			<Item header={'POSTAL CODE'} value={address.postalCode} />
+		<div className='border-red grid grid-cols-2 gap-2 rounded-xl border-4 p-4'>
+			{(Object.keys(labels) as Array<keyof AddressLabelType>).map(
+				(key: keyof AddressLabelType) => (
+					<div className='flex flex-col' key={key}>
+						<p className='font-bold'>{labels[key]}</p>
+						<div className='flex items-center justify-between'>
+							<p>{address[key]}</p>
+						</div>
+					</div>
+				)
+			)}
 		</div>
 	);
 }

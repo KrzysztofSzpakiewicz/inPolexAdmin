@@ -49,7 +49,13 @@ export default function NavBar({
 	return (
 		<div className='w-ful flex h-full flex-col gap-4 p-4 text-white'>
 			<div>
-				<Image width={210} height={20} src='/logo.svg' alt={'Logo'} />
+				<Image
+					width={210}
+					height={50}
+					src='/logo.svg'
+					alt={'Logo'}
+					priority={true}
+				/>
 			</div>
 			<DashboardButton
 				key={'Home'}
