@@ -1,10 +1,4 @@
-export type LocationsType = {
-	lat: number;
-	lng: number;
-	address: string;
-};
 import React from 'react';
-
 export type InputChangeEventType = React.ChangeEvent<HTMLInputElement>;
 export type SelectChangeEventType = React.ChangeEvent<HTMLSelectElement>;
 

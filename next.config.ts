@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 		return [
 			{
 				source: '/api/:path*', // Wszystkie żądania do /api/... będą przekierowane
-				destination: 'http://20.199.73.154:8080/:path*', // Przekieruj do backendu
+				destination: 'http://89.66.26.232:8080/:path*', // Przekieruj do backendu
 			},
 		];
 	},

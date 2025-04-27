@@ -22,3 +22,14 @@ export type UserType = {
 	verified: boolean;
 	role: 'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_COURIER';
 };
+
+export interface Address {
+	country: string;
+	city: string;
+	street: string;
+	number: string;
+	postalCode: string;
+	apartment: string;
+	latitude: number;
+	longitude: number;
+}
