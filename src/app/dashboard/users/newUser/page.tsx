@@ -38,7 +38,7 @@ export default function NewUser(): React.JSX.Element {
 	) => {
 		e.preventDefault();
 		try {
-			const newUserData: NewUserType & { addresses: Address[] } = {
+			const newUserData: NewUserType & { address: Address[] } = {
 				firstName,
 				lastName,
 				userName,
@@ -47,7 +47,7 @@ export default function NewUser(): React.JSX.Element {
 				phoneNumber,
 				verified,
 				role,
-				addresses: userAddresses,
+				address: userAddresses,
 			};
 			const response: Response = await fetch('/api/user', {
 				method: 'POST',
@@ -163,8 +163,12 @@ export default function NewUser(): React.JSX.Element {
 								}
 								className='text-light w-full appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
 							>
-								<option value='true'>True</option>
-								<option value='false'>False</option>
+								<option className='bg-navyLight' value='true'>
+									True
+								</option>
+								<option className='bg-navyLight' value='false'>
+									False
+								</option>
 							</select>
 							<span className='bg-red absolute bottom-0 left-0 h-0.5 w-0 rounded transition-all duration-300 group-focus-within:w-full'></span>
 						</div>
@@ -186,9 +190,24 @@ export default function NewUser(): React.JSX.Element {
 								}
 								className='text-light w-full appearance-none border-b-2 bg-transparent px-2 py-1 focus:outline-none'
 							>
-								<option value='ROLE_ADMIN'>ADMIN</option>
-								<option value='ROLE_USER'>USER</option>
-								<option value='ROLE_COURIER'>COURIER</option>
+								<option
+									className='bg-navyLight'
+									value='ROLE_ADMIN'
+								>
+									ADMIN
+								</option>
+								<option
+									className='bg-navyLight'
+									value='ROLE_USER'
+								>
+									USER
+								</option>
+								<option
+									className='bg-navyLight'
+									value='ROLE_COURIER'
+								>
+									COURIER
+								</option>
 							</select>
 							<span className='bg-red absolute bottom-0 left-0 h-0.5 w-0 rounded transition-all duration-300 group-focus-within:w-full'></span>
 						</div>

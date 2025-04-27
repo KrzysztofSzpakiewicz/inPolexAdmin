@@ -1,3 +1,49 @@
+export interface UserFromServerType {
+	id: number;
+	firstName: string;
+	lastName: string;
+	userName: string;
+	email: string;
+	phoneNumber: string;
+	role: string;
+	verified: boolean;
+	address: AddressFromServerType[];
+}
+
+export interface AddressFromServerType {
+	id?: number;
+	country: string;
+	city: string;
+	street: string;
+	number: string;
+	postalCode: string;
+	apartment: string;
+	latitude?: number;
+	longitude?: number;
+}
+
+export interface AddressPropsType {
+	address: AddressFromServerType;
+}
+
+export interface UserDetailsPropsType {
+	userData: UserFromServerType;
+}
+
+export interface EditUserModalPropsType {
+	userData: UserFromServerType;
+	onClose: () => void;
+	onUpdateUser: (userDetails: UserFromServerType) => void;
+}
+export interface AddressLabelType {
+	country: string;
+	city: string;
+	street: string;
+	number: string;
+	apartment: string;
+	postalCode: string;
+}
+
 export interface AddressType {
 	id: number;
 	country: string;
@@ -39,19 +85,6 @@ export interface ModifableUserDataType {
 	role: string;
 	address: AddressType[];
 }
-
-export interface UserFromServerType {
-	id: number;
-	firstName: string;
-	lastName: string;
-	userName: string;
-	email: string;
-	phoneNumber: string;
-	verified: boolean;
-	role: string;
-	address: AddressType[];
-}
-
 export interface LabelAdresType {
 	country: string;
 	city: string;
