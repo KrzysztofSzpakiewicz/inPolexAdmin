@@ -91,8 +91,6 @@ export default function UserAddresses({
 	const handleSelectFromMap: (address: Address) => void = (
 		address: Address
 	) => {
-		console.log('To dostaje adres z mapy', address);
-
 		setTempAddress(address);
 		setIsMapModalOpen(true);
 		setIsAddressModalOpen(false);
@@ -111,7 +109,7 @@ export default function UserAddresses({
 	};
 
 	return (
-		<div className='flex max-h-3/4 w-full flex-col items-start gap-4 p-4'>
+		<div className='flex h-full w-full flex-col items-start gap-4 overflow-y-auto p-4'>
 			{addresses.map((address: Address, index: number) => {
 				const isHovered: boolean = hoveredIndex === index;
 				return (
@@ -141,7 +139,7 @@ export default function UserAddresses({
 							))}
 						</div>
 						<div
-							className={` ${
+							className={`${
 								isHovered
 									? 'ml-4 w-1/6 translate-x-0'
 									: 'ml-0 w-0 translate-x-full'

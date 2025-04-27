@@ -42,7 +42,7 @@ export default function Select({
 			>
 				{selected?.label}
 				<Image
-					src='/arrowDown.svg'
+					src='/arrows/arrowDown.svg'
 					alt='arrowDown'
 					width={24}
 					height={24}

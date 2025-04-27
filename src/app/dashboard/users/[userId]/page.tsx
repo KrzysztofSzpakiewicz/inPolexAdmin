@@ -161,14 +161,14 @@ export default function User(): React.JSX.Element {
 				<>
 					{/* TOP BAR */}
 					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-4 transition hover:scale-105'>
+						<div className='flex items-center gap-4 font-bold transition hover:scale-105'>
 							<button
 								className='flex items-center'
 								onClick={() => router.push('/dashboard/users')}
 							>
 								<Image
 									alt='arrowBack'
-									src='/arrowBack.svg'
+									src='/arrows/arrowBack.svg'
 									width={32}
 									height={32}
 								/>

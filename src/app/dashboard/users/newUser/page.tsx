@@ -73,12 +73,12 @@ export default function NewUser(): React.JSX.Element {
 		<div className=''>
 			<div className='flex items-center justify-between'>
 				<button
-					className='flex items-center transition hover:scale-105'
+					className='flex items-center font-bold transition hover:scale-105'
 					onClick={() => router.push('/dashboard/users')}
 				>
 					<Image
 						alt='arrowBack'
-						src='/arrowBack.svg'
+						src='/arrows/arrowBack.svg'
 						width={32}
 						height={32}
 					/>
@@ -86,13 +86,13 @@ export default function NewUser(): React.JSX.Element {
 				</button>
 				<div className='flex gap-4'>
 					<button
-						className='rounded-xl bg-red-600 px-4 py-2 font-bold'
+						className='bg-red rounded-xl px-4 py-2 font-bold hover:bg-red-600'
 						onClick={handleCancel}
 					>
 						CANCEL
 					</button>
 					<button
-						className='rounded-xl bg-green-600 px-4 py-2 font-bold'
+						className='bg-green rounded-xl px-4 py-2 font-bold hover:bg-green-600'
 						type='submit'
 						form='userDataForm'
 					>
@@ -252,10 +252,12 @@ export default function NewUser(): React.JSX.Element {
 						/>
 						USER ADDRESSES:
 					</div>
-					<UserAddresses
-						addresses={userAddresses}
-						onAddressesChange={setUserAddresses}
-					/>
+					<div className='scrollba overflow-y-auto'>
+						<UserAddresses
+							addresses={userAddresses}
+							onAddressesChange={setUserAddresses}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
