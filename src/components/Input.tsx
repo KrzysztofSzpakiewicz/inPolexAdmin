@@ -3,24 +3,32 @@ import { InputChangeEventType } from '@/app/dataTypes';
 import React from 'react';
 
 interface InputProps {
-	value: string;
+	value: string | number;
 	placeholder: string;
 	isPassword?: boolean;
 	type: string;
-	onChange: (value: string) => void;
+	isDisabled?: boolean;
+	onChange: (value: string | number) => void;
 }
 
 export default function Input({
 	value,
 	placeholder,
 	type,
+	isDisabled,
 	onChange,
 }: InputProps): React.JSX.Element {
 	const handleChange: (e: InputChangeEventType) => void = (
 		e: InputChangeEventType
 	) => {
-		const value: string = e.target.value;
-		onChange(value);
+		let value: string | number;
+		if (type === 'number') {
+			value = parseFloat(e.target.value);
+		} else {
+			value = e.target.value;
+		}
+
+		onChange(value.toString());
 	};
 
 	return (
@@ -36,6 +44,7 @@ export default function Input({
 					className='text-light w-64 border-b-2 bg-transparent px-2 py-1 placeholder-neutral-400 focus:outline-none'
 					placeholder={`${placeholder}...`}
 					required
+					disabled={isDisabled}
 				/>
 				<span className='bg-red absolute bottom-0 left-0 h-0.5 w-0 rounded transition-all duration-300 group-focus-within:w-full' />
 			</div>

@@ -73,7 +73,7 @@ export default function UsersList(): React.JSX.Element {
 				setIsLoading(false);
 			}
 		},
-		[searchField, searchQuery, pageSize, token]
+		[searchField, searchQuery, pageSize]
 	);
 
 	React.useEffect(() => {
