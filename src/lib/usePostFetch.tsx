@@ -10,7 +10,6 @@ export default function usePostFetch<TRequest, TResponse>(): UsePostFetchProps<
 	const [data, setData] = React.useState<TResponse | null>(null);
 	const [error, setError] = React.useState<string | null>(null);
 	const [loading, setLoading] = React.useState<boolean>(false);
-	console.log('usePostFetch', data);
 
 	const post: (url: string, requestData?: TRequest) => Promise<void> = async (
 		url: string,

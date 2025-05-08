@@ -1,38 +1,13 @@
-import React, { useEffect } from 'react';
-import {
-	PackageSizeModalProps,
-	PackageSizeResponse,
-	PackageSizeType,
-} from '../../dataTypes';
+import React, { useState } from 'react';
+import { PackageSizeEditModalProps } from '../../dataTypes';
 import Input from '@/components/Input';
-import usePostFetch from '@/lib/usePostFetch';
-export default function PackageSizeModal({
-	packageSize,
+
+export default function PackageSizeEditModal({
+	data,
 	onCancel,
-	onSetIsLoading,
-	onSetError,
-}: PackageSizeModalProps): React.JSX.Element {
-	const { post, error, loading } = usePostFetch<
-		PackageSizeType,
-		PackageSizeResponse
-	>();
-
-	const [packages, setPackages] =
-		React.useState<PackageSizeType>(packageSize);
-
-	useEffect(() => {
-		onSetIsLoading?.(loading);
-		if (error !== null) {
-			onSetError?.(error);
-		}
-	}, [loading, onSetIsLoading, onSetError, error]);
-
-	const handleSubmit: () => void = () => {
-		post('/api/system-parameter/package-size', packages);
-		post(
-			`/api/system-parameter/package-size/${packages.id}?id=${packages.id}`
-		);
-	};
+	onSetData,
+}: PackageSizeEditModalProps): React.JSX.Element {
+	const [packageData, setPackageData] = useState(data);
 
 	return (
 		<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
@@ -40,31 +15,33 @@ export default function PackageSizeModal({
 				<h2 className='flex items-center justify-center gap-2 text-center text-2xl font-bold'>
 					EDIT PACKAGE SIZE{' '}
 					<span className='text-red text-center text-3xl font-bold'>
-						{packages.size}
+						{packageData.size}
 					</span>
 				</h2>
 
 				<form
 					className='flex flex-col gap-2'
-					onSubmit={handleSubmit}
 					id='packageSizeForm'
 					action={undefined}
 				>
 					<Input
 						type='number'
-						value={packages.price}
+						value={packageData.price}
 						placeholder={'Price'}
 						onChange={(value: string | number) =>
-							setPackages({ ...packages, price: Number(value) })
+							setPackageData({
+								...packageData,
+								price: Number(value),
+							})
 						}
 					/>
 					<Input
 						type='number'
-						value={packages.maxWeight}
+						value={packageData.maxWeight}
 						placeholder={'Max weight (KG)'}
 						onChange={(value: string | number) =>
-							setPackages({
-								...packages,
+							setPackageData({
+								...packageData,
 								maxWeight: Number(value),
 							})
 						}
@@ -73,13 +50,13 @@ export default function PackageSizeModal({
 					<p className='text-red font-semibold'>DIMENSIONS:</p>
 					<Input
 						type='number'
-						value={packages.dimensions.width}
+						value={packageData.dimensions.width}
 						placeholder={'Max width (cm)'}
 						onChange={(value: string | number) =>
-							setPackages({
-								...packages,
+							setPackageData({
+								...packageData,
 								dimensions: {
-									...packages.dimensions,
+									...packageData.dimensions,
 									width: Number(value),
 								},
 							})
@@ -87,13 +64,13 @@ export default function PackageSizeModal({
 					/>
 					<Input
 						type='number'
-						value={packages.dimensions.depth}
+						value={packageData.dimensions.depth}
 						placeholder={'Max depth (cm)'}
 						onChange={(value: string | number) =>
-							setPackages({
-								...packages,
+							setPackageData({
+								...packageData,
 								dimensions: {
-									...packages.dimensions,
+									...packageData.dimensions,
 									depth: Number(value),
 								},
 							})
@@ -101,13 +78,13 @@ export default function PackageSizeModal({
 					/>
 					<Input
 						type='number'
-						value={packages.dimensions.height}
+						value={packageData.dimensions.height}
 						placeholder={'Max height (cm)'}
 						onChange={(value: string | number) =>
-							setPackages({
-								...packages,
+							setPackageData({
+								...packageData,
 								dimensions: {
-									...packages.dimensions,
+									...packageData.dimensions,
 									height: Number(value),
 								},
 							})
@@ -123,8 +100,8 @@ export default function PackageSizeModal({
 					</button>
 					<button
 						className='bg-green text-light rounded px-4 py-2 font-bold transition hover:bg-green-600'
-						type='submit'
-						form='packageSizeForm'
+						type='button'
+						onClick={() => onSetData(packageData)}
 					>
 						SAVE
 					</button>

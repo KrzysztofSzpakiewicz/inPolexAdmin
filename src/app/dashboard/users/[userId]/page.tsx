@@ -162,7 +162,7 @@ export default function User(): React.JSX.Element {
 						<div className='flex items-center gap-4 font-bold transition hover:scale-105'>
 							<button
 								className='flex items-center'
-								onClick={() => router.push('/dashboard/users')}
+								onClick={() => router.back()}
 							>
 								<Image
 									alt='arrowBack'
