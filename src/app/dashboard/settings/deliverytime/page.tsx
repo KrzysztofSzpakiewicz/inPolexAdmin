@@ -15,9 +15,9 @@ export default function DeliveryTimePage(): React.JSX.Element {
 	const [activeDeliveryTimes, setActiveDeliveryTimes] = React.useState<
 		DeliveryTimeType[]
 	>([]);
-	const [isNewModalOpen, setIsNewModalOpen] = React.useState<boolean>(false);
-	const [isEditModalOpen, setIsEditModalOpen] =
-		React.useState<boolean>(false);
+	// const [isNewModalOpen, setIsNewModalOpen] = React.useState<boolean>(false);
+	// const [isEditModalOpen, setIsEditModalOpen] =
+	// 	React.useState<boolean>(false);
 
 	useEffect(() => {
 		getArchived('/api/system-parameter/delivery-time?active=false', token);
