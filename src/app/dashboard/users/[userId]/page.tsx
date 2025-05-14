@@ -54,6 +54,9 @@ export default function User(): React.JSX.Element {
 	}, [fetchUserData]);
 
 	const deleteUser: () => Promise<void> = async (): Promise<void> => {
+		console.log(fetchedUserData);
+		console.log(token);
+
 		try {
 			const response: Response = await fetch(
 				`/api/user/${fetchedUserData?.id}`,

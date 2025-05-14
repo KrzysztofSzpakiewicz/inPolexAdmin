@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Input from '../Input';
 import Image from 'next/image';
 import { Address, AddressModalProps } from './dataTypes';
+import InputComponent from '../NewInput';
 
 export default function AddressModal({
 	initialAddress,
@@ -41,13 +41,6 @@ export default function AddressModal({
 			});
 		}
 	}, [initialAddress]);
-
-	const handleChange: (field: keyof Address, value: string) => void = (
-		field: keyof Address,
-		value: string
-	) => {
-		setAddress({ ...address, [field]: value });
-	};
 
 	const handleOnSelectMap: () => void = () => {
 		if (
@@ -130,53 +123,86 @@ export default function AddressModal({
 					onSubmit={() => onSave(address)}
 					id='addressForm'
 				>
-					<Input
+					<InputComponent
 						value={address.country}
-						placeholder={'Country'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('country', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									country: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='Country'
+						required
 					/>
-					<Input
+					<InputComponent
 						value={address.city}
-						placeholder={'City'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('city', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									city: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='City'
+						required
 					/>
-					<Input
+
+					<InputComponent
 						value={address.street}
-						placeholder={'Street'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('street', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									street: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='Street'
+						required
 					/>
-					<Input
+
+					<InputComponent
 						value={address.number}
-						placeholder={'Street Number'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('number', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									number: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='Street Number'
+						required
 					/>
-					<Input
+
+					<InputComponent
 						value={address.apartment}
-						placeholder={'Apartment'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('apartment', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									apartment: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='Apartment'
+						required
 					/>
-					<Input
+					<InputComponent
 						value={address.postalCode}
-						placeholder={'Postal Code'}
-						type={'text'}
-						onChange={(value: string) =>
-							handleChange('postalCode', value)
+						onChange={
+							((value: string) => {
+								setAddress((prev: Address) => ({
+									...prev,
+									postalCode: value,
+								}));
+							}) as React.Dispatch<React.SetStateAction<string>>
 						}
+						placeholder='Postal Code'
+						required
 					/>
 				</form>
 

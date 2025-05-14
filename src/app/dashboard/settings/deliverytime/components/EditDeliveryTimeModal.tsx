@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DeliveryTimeType, EditDeliveryTimeModalProps } from '../../dataTypes';
-import Input from '@/components/Input';
+
+import InputComponent from '@/components/NewInput';
 export default function EditDeliveryTimeModal({
 	deliveryData,
 	onCancel,
@@ -23,28 +24,46 @@ export default function EditDeliveryTimeModal({
 					id='deliveryTimeForm'
 					action={undefined}
 				>
-					<Input
-						type='number'
+					<InputComponent
 						value={deliveryTimeData.workDaysAmount}
-						placeholder={'Working days'}
-						onChange={(value: string | number) =>
-							setDeliveryTimeData({
-								...deliveryTimeData,
-								workDaysAmount: Number(value),
-							})
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setDeliveryTimeData(
+									(prev: DeliveryTimeType) => ({
+										...prev,
+										workDaysAmount: numericValue,
+									})
+								);
+							}) as React.Dispatch<React.SetStateAction<number>>
 						}
-						isDisabled={true}
+						placeholder='Days'
+						isDisabled
+						required
 					/>
-					<Input
-						type='number'
+					<InputComponent
 						value={deliveryTimeData.price}
-						placeholder={'Price'}
-						onChange={(value: string | number) =>
-							setDeliveryTimeData({
-								...deliveryTimeData,
-								price: Number(value),
-							})
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setDeliveryTimeData(
+									(prev: DeliveryTimeType) => ({
+										...prev,
+										price: numericValue,
+									})
+								);
+							}) as React.Dispatch<React.SetStateAction<number>>
 						}
+						placeholder='Pirce'
+						required
 					/>
 				</form>
 				<div className='flex flex-row items-center justify-center gap-4'>

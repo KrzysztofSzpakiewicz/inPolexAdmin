@@ -4,8 +4,8 @@ import { EditUserModalPropsType, UserFromServerType } from '../dataTypes';
 import UserAddresses from '@/components/AddressModals';
 import { useState } from 'react';
 import { Address } from '@/components/Addresses/dataTypes';
-import Input from '@/components/Input';
 import { SelectChangeEventType } from '../../newUser/dataTypes';
+import InputComponent from '@/components/NewInput';
 
 interface UserDetails {
 	id: number;
@@ -25,14 +25,7 @@ export default function EditUserModal({
 }: EditUserModalPropsType): React.JSX.Element {
 	const [addresses, setAddresses] = useState<Address[]>(userData.address);
 	const [userDetails, setUserDetails] = useState<UserDetails>({
-		id: userData.id,
-		firstName: userData.firstName,
-		lastName: userData.lastName,
-		userName: userData.userName,
-		email: userData.email,
-		phoneNumber: userData.phoneNumber,
-		role: userData.role,
-		verified: userData.verified,
+		...userData,
 	});
 
 	const handleUserDetailsChange: (
@@ -68,38 +61,50 @@ export default function EditUserModal({
 						onSubmit={handlePress}
 						id='userDetailsForm'
 					>
-						<Input
-							type='text'
+						<InputComponent
 							value={userDetails.firstName}
-							placeholder='First Name'
-							onChange={(val: string | number) =>
-								handleUserDetailsChange(
-									'firstName',
-									val.toString()
-								)
+							onChange={
+								((value: string) => {
+									setUserDetails((prev: UserDetails) => ({
+										...prev,
+										firstName: value,
+									}));
+								}) as React.Dispatch<
+									React.SetStateAction<string>
+								>
 							}
+							placeholder='First name'
+							required
 						/>
-						<Input
-							type='text'
+						<InputComponent
 							value={userDetails.lastName}
+							onChange={
+								((value: string) => {
+									setUserDetails((prev: UserDetails) => ({
+										...prev,
+										lastName: value,
+									}));
+								}) as React.Dispatch<
+									React.SetStateAction<string>
+								>
+							}
 							placeholder='Last Name'
-							onChange={(val: string | number) =>
-								handleUserDetailsChange(
-									'lastName',
-									val.toString()
-								)
-							}
+							required
 						/>
-						<Input
-							type='text'
+						<InputComponent
 							value={userDetails.userName}
-							placeholder='User Name'
-							onChange={(val: string | number) =>
-								handleUserDetailsChange(
-									'userName',
-									val.toString()
-								)
+							onChange={
+								((value: string) => {
+									setUserDetails((prev: UserDetails) => ({
+										...prev,
+										userName: value,
+									}));
+								}) as React.Dispatch<
+									React.SetStateAction<string>
+								>
 							}
+							placeholder='User Name'
+							required
 						/>
 						<div className='flex items-center gap-4'>
 							<label className='font-montserrat text-light mb-0 w-40'>

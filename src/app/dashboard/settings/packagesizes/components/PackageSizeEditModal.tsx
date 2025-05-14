@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { PackageSizeEditModalProps } from '../../dataTypes';
-import Input from '@/components/Input';
+import { PackageSizeEditModalProps, PackageSizeType } from '../../dataTypes';
+import InputComponent from '@/components/NewInput';
 
 export default function PackageSizeEditModal({
 	data,
@@ -24,71 +24,105 @@ export default function PackageSizeEditModal({
 					id='packageSizeForm'
 					action={undefined}
 				>
-					<Input
-						type='number'
+					<InputComponent
 						value={packageData.price}
-						placeholder={'Price'}
-						onChange={(value: string | number) =>
-							setPackageData({
-								...packageData,
-								price: Number(value),
-							})
-						}
-					/>
-					<Input
-						type='number'
-						value={packageData.maxWeight}
-						placeholder={'Max weight (KG)'}
-						onChange={(value: string | number) =>
-							setPackageData({
-								...packageData,
-								maxWeight: Number(value),
-							})
-						}
-					/>
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
 
+								setPackageData((prev: PackageSizeType) => ({
+									...prev,
+									price: numericValue,
+								}));
+							}) as React.Dispatch<React.SetStateAction<number>>
+						}
+						placeholder='Price'
+						required
+					/>
+					<InputComponent
+						value={packageData.maxWeight}
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setPackageData((prev: PackageSizeType) => ({
+									...prev,
+									maxWeight: numericValue,
+								}));
+							}) as React.Dispatch<React.SetStateAction<number>>
+						}
+						placeholder='Max weight (KG)'
+						required
+					/>
 					<p className='text-red font-semibold'>DIMENSIONS:</p>
-					<Input
-						type='number'
+					<InputComponent
 						value={packageData.dimensions.width}
-						placeholder={'Max width (cm)'}
-						onChange={(value: string | number) =>
-							setPackageData({
-								...packageData,
-								dimensions: {
-									...packageData.dimensions,
-									width: Number(value),
-								},
-							})
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setPackageData((prev: PackageSizeType) => ({
+									...prev,
+									dimensions: {
+										...packageData.dimensions,
+										width: numericValue,
+									},
+								}));
+							}) as React.Dispatch<React.SetStateAction<number>>
 						}
+						placeholder='Max width (cm)'
+						required
 					/>
-					<Input
-						type='number'
+					<InputComponent
 						value={packageData.dimensions.depth}
-						placeholder={'Max depth (cm)'}
-						onChange={(value: string | number) =>
-							setPackageData({
-								...packageData,
-								dimensions: {
-									...packageData.dimensions,
-									depth: Number(value),
-								},
-							})
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setPackageData((prev: PackageSizeType) => ({
+									...prev,
+									dimensions: {
+										...packageData.dimensions,
+										depth: numericValue,
+									},
+								}));
+							}) as React.Dispatch<React.SetStateAction<number>>
 						}
+						placeholder='Max depth (cm)'
+						required
 					/>
-					<Input
-						type='number'
+					<InputComponent
 						value={packageData.dimensions.height}
-						placeholder={'Max height (cm)'}
-						onChange={(value: string | number) =>
-							setPackageData({
-								...packageData,
-								dimensions: {
-									...packageData.dimensions,
-									height: Number(value),
-								},
-							})
+						onChange={
+							((value: string | number) => {
+								const numericValue: number =
+									typeof value === 'string'
+										? Number(value)
+										: value;
+
+								setPackageData((prev: PackageSizeType) => ({
+									...prev,
+									dimensions: {
+										...packageData.dimensions,
+										height: numericValue,
+									},
+								}));
+							}) as React.Dispatch<React.SetStateAction<number>>
 						}
+						placeholder='Max height (cm)'
+						required
 					/>
 				</form>
 				<div className='flex flex-row items-center justify-center gap-4'>

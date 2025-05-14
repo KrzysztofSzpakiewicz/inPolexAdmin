@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DeliveryTimeType, NewDeliveryTimeModalProps } from '../../dataTypes';
-import Input from '@/components/Input';
+import InputComponent from '@/components/NewInput';
 export default function NewDeliveryTimeModal({
 	onCancel,
 	onSetData,
@@ -24,6 +24,11 @@ export default function NewDeliveryTimeModal({
 
 		onSetData(workDaysAmount, price);
 	};
+
+	useEffect(() => {
+		setCanAddNewDeliveryTime(false);
+	}, [workDaysAmount]);
+
 	return (
 		<div className='bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black'>
 			<div className='bg-lightGray flex flex-col gap-8 rounded-lg p-8 shadow-lg'>
@@ -31,22 +36,19 @@ export default function NewDeliveryTimeModal({
 					NEW DELIVERY TIME
 				</h2>
 				<div className=''>
-					<Input
-						type='number'
+					<InputComponent
 						value={workDaysAmount}
+						onChange={setWorkDaysAmount}
 						placeholder='Days'
-						onChange={(val: string | number) => {
-							setCanAddNewDeliveryTime(false);
-							setWorkDaysAmount(Number(val));
-						}}
+						labelWidth='w-20'
+						required
 					/>
-					<Input
-						type='number'
+					<InputComponent
 						value={price}
+						onChange={setPrice}
 						placeholder='Price'
-						onChange={(val: string | number) =>
-							setPrice(Number(val))
-						}
+						labelWidth='w-20'
+						required
 					/>
 				</div>
 				{canAddNewDeliveryTime && (
