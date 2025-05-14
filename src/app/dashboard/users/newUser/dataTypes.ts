@@ -7,7 +7,7 @@ export type NewUserType = {
 	lastName: string;
 	userName: string;
 	password: string;
-	phoneNumber: string | null;
+	phoneNumber: number | null;
 	email: string;
 	verified: boolean;
 	role: 'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_COURIER';

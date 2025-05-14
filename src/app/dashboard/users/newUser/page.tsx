@@ -1,30 +1,25 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Input from '@/components/Input';
 
-import {
-	InputChangeEventType,
-	NewUserType,
-	SelectChangeEventType,
-} from './dataTypes';
+import { NewUserType, SelectChangeEventType } from './dataTypes';
 import Cookies from 'js-cookie';
 const token: string | undefined = Cookies.get('authToken');
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import UserAddresses from '@/components/AddressModals';
 import { Address } from '@/components/Addresses/dataTypes';
 import Image from 'next/image';
+import InputComponent from '@/components/NewInput';
 
 export default function NewUser(): React.JSX.Element {
 	const router: AppRouterInstance = useRouter();
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [phoneNumber, setPhoneNumber] = useState('');
-	const [email, setEmail] = useState('');
-	const [userName, setUserName] = useState('');
-	const [password, setPassword] = useState('');
-	const [showPassword, setShowPassword] = useState(false);
-	const [verified, setVerified] = useState(false);
+	const [firstName, setFirstName] = useState<string>('');
+	const [lastName, setLastName] = useState<string>('');
+	const [phoneNumber, setPhoneNumber] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [userName, setUserName] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [verified, setVerified] = useState<boolean>(false);
 	const [role, setRole] = useState<
 		'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_COURIER'
 	>('ROLE_USER');
@@ -45,7 +40,7 @@ export default function NewUser(): React.JSX.Element {
 				userName,
 				email,
 				password,
-				phoneNumber,
+				phoneNumber: Number(phoneNumber), // Convert phoneNumber to number
 				verified,
 				role,
 				address: userAddresses,
@@ -124,71 +119,51 @@ export default function NewUser(): React.JSX.Element {
 						/>
 						USER INFO:
 					</div>
-					<Input
-						type='text'
+					<InputComponent
 						value={firstName}
+						onChange={setFirstName}
 						placeholder='First name'
-						onChange={(value: string | number) =>
-							setFirstName(value.toString())
-						}
+						required
 					/>
-					<Input
-						type='text'
+					<InputComponent
 						value={lastName}
+						onChange={setLastName}
 						placeholder='Last name'
-						onChange={(value: string | number) =>
-							setLastName(value.toString())
-						}
+						required
 					/>
-					<Input
-						type='text'
+					<InputComponent
 						value={userName}
+						onChange={setUserName}
 						placeholder='User name'
-						onChange={(value: string | number) =>
-							setUserName(value.toString())
-						}
+						required
 					/>
-					<Input
-						type='number'
+					<InputComponent
 						value={phoneNumber}
+						onChange={(
+							val: string | ((prevState: string) => string)
+						) => {
+							const sanitized: string = String(val)
+								.replace(/\D/g, '')
+								.slice(0, 9);
+							setPhoneNumber(sanitized);
+						}}
 						placeholder='Phone number'
-						onChange={(value: string | number) =>
-							setPhoneNumber(value.toString())
-						}
+						required
 					/>
-					<Input
-						type='email'
+					<InputComponent
 						value={email}
+						onChange={setEmail}
 						placeholder='Email'
-						onChange={(value: string | number) =>
-							setEmail(value.toString())
-						}
+						required
 					/>
-					<div className='flex items-center gap-4'>
-						<label className='font-montserrat text-light mb-0 w-40'>
-							Password:
-						</label>
-						<div className='group relative w-64'>
-							<input
-								type={showPassword ? 'text' : 'password'}
-								value={password}
-								onChange={(e: InputChangeEventType) =>
-									setPassword(e.target.value)
-								}
-								className='text-light w-64 border-b-2 bg-transparent px-2 py-1 pr-8 placeholder-neutral-400 focus:outline-none'
-								placeholder='Password...'
-								required
-							/>
-							<span className='bg-red absolute bottom-0 left-0 h-0.5 w-0 rounded transition-all duration-300 group-focus-within:w-full'></span>
-							<button
-								type='button'
-								onClick={() => setShowPassword(!showPassword)}
-								className='absolute top-1/2 right-2 -translate-y-1/2 text-gray-500'
-							>
-								{/* icons omitted */}
-							</button>
-						</div>
-					</div>
+					<InputComponent
+						value={password}
+						onChange={setPassword}
+						placeholder='Password'
+						required
+						isPassword
+					/>
+
 					<div className='flex items-center gap-4'>
 						<label className='font-montserrat text-light mb-0 w-40'>
 							Verified:

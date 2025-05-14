@@ -84,6 +84,7 @@ export default function Sizes(): React.JSX.Element {
 		PackageSizeType,
 		PackageSizeResponse
 	>();
+	console.log(activeData);
 
 	const router: AppRouterInstance = useRouter();
 
@@ -92,7 +93,7 @@ export default function Sizes(): React.JSX.Element {
 	) => {
 		post('/api/system-parameter/package-size', updatedData);
 		post(`/api/system-parameter/package-size/${updatedData.id}`);
-		setReFetch(!reFetch);
+		setReFetch(true);
 		setIsEditModalOpen(false);
 	};
 
@@ -103,6 +104,7 @@ export default function Sizes(): React.JSX.Element {
 	useEffect(() => {
 		getActive('/api/system-parameter/package-size?active=true', token);
 		getArchived('/api/system-parameter/package-size?active=false', token);
+		setReFetch(false);
 	}, [getActive, getArchived, reFetch]);
 
 	const handleSelectPackage: (packageSize: PackageSizeType) => void = (
