@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { EditUserModalPropsType, UserFromServerType } from '../dataTypes';
 import UserAddresses from '@/components/AddressModals';
@@ -44,7 +45,10 @@ export default function EditUserModal({
 		}));
 	};
 
-	const handlePress: () => void = () => {
+	const handlePress: (event: React.FormEvent) => void = (
+		event: React.FormEvent
+	) => {
+		event.preventDefault();
 		const updatedUserDetails: UserFromServerType = {
 			...userDetails,
 			address: addresses,
@@ -60,32 +64,41 @@ export default function EditUserModal({
 				</h2>
 				<div className='flex flex-row'>
 					<form
-						id='userDetailsForm'
 						className='flex w-1/2 flex-col gap-2'
 						onSubmit={handlePress}
+						id='userDetailsForm'
 					>
 						<Input
 							type='text'
 							value={userDetails.firstName}
 							placeholder='First Name'
-							onChange={(val: string) =>
-								handleUserDetailsChange('firstName', val)
+							onChange={(val: string | number) =>
+								handleUserDetailsChange(
+									'firstName',
+									val.toString()
+								)
 							}
 						/>
 						<Input
 							type='text'
 							value={userDetails.lastName}
 							placeholder='Last Name'
-							onChange={(val: string) =>
-								handleUserDetailsChange('lastName', val)
+							onChange={(val: string | number) =>
+								handleUserDetailsChange(
+									'lastName',
+									val.toString()
+								)
 							}
 						/>
 						<Input
 							type='text'
 							value={userDetails.userName}
 							placeholder='User Name'
-							onChange={(val: string) =>
-								handleUserDetailsChange('userName', val)
+							onChange={(val: string | number) =>
+								handleUserDetailsChange(
+									'userName',
+									val.toString()
+								)
 							}
 						/>
 						<div className='flex items-center gap-4'>

@@ -74,7 +74,7 @@ export default function NewUser(): React.JSX.Element {
 			<div className='flex items-center justify-between'>
 				<button
 					className='flex items-center font-bold transition hover:scale-105'
-					onClick={() => router.push('/dashboard/users')}
+					onClick={() => router.back()}
 				>
 					<Image
 						alt='arrowBack'
@@ -128,31 +128,41 @@ export default function NewUser(): React.JSX.Element {
 						type='text'
 						value={firstName}
 						placeholder='First name'
-						onChange={(value: string) => setFirstName(value)}
+						onChange={(value: string | number) =>
+							setFirstName(value.toString())
+						}
 					/>
 					<Input
 						type='text'
 						value={lastName}
 						placeholder='Last name'
-						onChange={(value: string) => setLastName(value)}
+						onChange={(value: string | number) =>
+							setLastName(value.toString())
+						}
 					/>
 					<Input
 						type='text'
 						value={userName}
 						placeholder='User name'
-						onChange={(value: string) => setUserName(value)}
+						onChange={(value: string | number) =>
+							setUserName(value.toString())
+						}
 					/>
 					<Input
 						type='number'
 						value={phoneNumber}
 						placeholder='Phone number'
-						onChange={(value: string) => setPhoneNumber(value)}
+						onChange={(value: string | number) =>
+							setPhoneNumber(value.toString())
+						}
 					/>
 					<Input
 						type='email'
 						value={email}
 						placeholder='Email'
-						onChange={(value: string) => setEmail(value)}
+						onChange={(value: string | number) =>
+							setEmail(value.toString())
+						}
 					/>
 					<div className='flex items-center gap-4'>
 						<label className='font-montserrat text-light mb-0 w-40'>

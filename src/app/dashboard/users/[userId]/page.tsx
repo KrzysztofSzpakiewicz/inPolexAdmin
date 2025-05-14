@@ -55,8 +55,6 @@ export default function User(): React.JSX.Element {
 
 	const deleteUser: () => Promise<void> = async (): Promise<void> => {
 		try {
-			alert('Deleting user...');
-
 			const response: Response = await fetch(
 				`/api/user/${fetchedUserData?.id}`,
 				{
@@ -164,7 +162,7 @@ export default function User(): React.JSX.Element {
 						<div className='flex items-center gap-4 font-bold transition hover:scale-105'>
 							<button
 								className='flex items-center'
-								onClick={() => router.push('/dashboard/users')}
+								onClick={() => router.back()}
 							>
 								<Image
 									alt='arrowBack'
