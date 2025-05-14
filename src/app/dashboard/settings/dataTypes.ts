@@ -57,3 +57,29 @@ export interface PackageSizeEditModalProps {
 	onCancel: () => void;
 	onSetData: (data: PackageSizeType) => void;
 }
+
+export interface NewDeliveryTimeModalProps {
+	onCancel: () => void;
+	onSetData: (workDaysAmount: number, price: number) => void;
+	deliveryTimeData: DeliveryTimeType[];
+}
+
+export type NewDeliveryTimeType = {
+	workDaysAmount: number;
+	price: number;
+};
+
+export type NewDeliveryTimeResponse = {
+	success: boolean;
+	message: string;
+};
+
+export interface EditDeliveryTimeModalProps {
+	deliveryData: DeliveryTimeType;
+	onCancel: () => void;
+	onSetData: (data: DeliveryTimeType) => void;
+}
+
+export interface ArchiveDeliveryTimeProps {
+	data: DeliveryTimeType[];
+}

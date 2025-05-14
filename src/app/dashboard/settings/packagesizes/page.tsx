@@ -21,10 +21,8 @@ function Package({
 	return (
 		<div
 			key={packageSize.id}
-			className={`flex items-center gap-4 rounded-xl border-4 border-red-500 p-4 text-sm transition-transform duration-300 ${
-				isHovered === packageSize.id
-					? 'translate-x-35'
-					: 'translate-x-0'
+			className={`flex items-center gap-4 rounded-xl border-4 border-red-500 p-4 text-sm transition-all duration-300 ${
+				isHovered === packageSize.id ? 'w-3/4' : 'w-full'
 			}`}
 		>
 			<p className='text-red min-w-20 text-center text-6xl font-bold'>
@@ -115,7 +113,7 @@ export default function Sizes(): React.JSX.Element {
 	};
 
 	return (
-		<div className='flex h-full w-full flex-col'>
+		<div className='flex flex-col gap-2'>
 			{isLoading && (
 				<div className='bg-opacity-50 fixed inset-0 flex items-center justify-center bg-black'>
 					<div className='mt-4 flex justify-center'>
@@ -130,21 +128,24 @@ export default function Sizes(): React.JSX.Element {
 					onSetData={handleOnSetData}
 				/>
 			)}
-			<button
-				className='flex items-center font-bold transition'
-				onClick={() => router.back()}
-			>
-				<Image
-					alt='arrowBack'
-					src='/arrows/arrowBack.svg'
-					width={32}
-					height={32}
-				/>
-				GO BACK
-			</button>
+			<div className='flex'>
+				<div
+					className='flex items-center gap-4 font-bold transition hover:scale-105'
+					onClick={() => router.back()}
+				>
+					<Image
+						alt='arrowBack'
+						src='/arrows/arrowBack.svg'
+						width={32}
+						height={32}
+					/>
+					GO BACK
+				</div>
+			</div>
+
 			<h1 className='mb-4 text-2xl font-bold'>PACKAGE SIZES SETTINGS</h1>
-			<div className='flex h-full flex-row'>
-				<div className='flex h-full w-1/2 flex-col gap-2'>
+			<div className='flex h-full flex-row justify-between'>
+				<div className='flex h-full w-2/5 flex-col gap-2'>
 					<h2>MODIFY PACKAGE SIZE</h2>
 					{activeData &&
 						!isLoading &&
@@ -163,18 +164,22 @@ export default function Sizes(): React.JSX.Element {
 							})
 							.map((packageSize: PackageSizeType) => (
 								<div
-									className='relative w-3/4 overflow-hidden'
+									className='relative flex w-full overflow-hidden'
 									key={packageSize.id}
 									onMouseEnter={() =>
 										setIsHovered(packageSize.id)
 									}
 									onMouseLeave={() => setIsHovered(undefined)}
 								>
+									<Package
+										packageSize={packageSize}
+										isHovered={isHovered}
+									/>
 									<div
-										className={`bg-red absolute inset-y-0 left-0 flex aspect-square cursor-pointer flex-col items-center justify-center rounded-xl px-4 text-xl font-bold text-white transition-transform duration-300 ${
+										className={`bg-red flex transform cursor-pointer items-center justify-center overflow-hidden rounded-xl transition-all duration-300 ${
 											isHovered === packageSize.id
-												? 'translate-x-0'
-												: '-translate-x-full'
+												? 'ml-4 w-1/4 translate-x-0'
+												: 'ml-0 w-0 translate-x-full'
 										}`}
 										onClick={() =>
 											handleSelectPackage(packageSize)
@@ -182,14 +187,10 @@ export default function Sizes(): React.JSX.Element {
 									>
 										EDIT
 									</div>
-									<Package
-										packageSize={packageSize}
-										isHovered={isHovered}
-									/>
 								</div>
 							))}
 				</div>
-				<div className='flex max-h-screen w-1/2 flex-col gap-2 overflow-auto'>
+				<div className='flex max-h-screen w-2/5 flex-col gap-2 overflow-auto'>
 					<h2>ARCHIVED PACKAGES</h2>
 					<PackageSizeHistory data={archivedData || []} />
 				</div>
