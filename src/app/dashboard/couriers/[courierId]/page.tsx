@@ -4,10 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { CourierType, PackageType } from '../dataTypes';
+import { CourierPackageType, CourierType, PackageType } from '../dataTypes';
 import CourierDetails from './components/CourierDetails';
 import PackagesDetails from './components/PackagesDetails';
 import Cookies from 'js-cookie';
+import PackagesAssignedToCourier from './components/PackagesAssignedToCourier';
 const token: string = Cookies.get('authToken') || '';
 export default function CourierPage(): React.JSX.Element {
 	const router: AppRouterInstance = useRouter();
@@ -57,8 +58,8 @@ export default function CourierPage(): React.JSX.Element {
 							},
 						}
 					);
-					const result: PackageType[] = await response.json();
-					setCourierPackages(result);
+					const result: CourierPackageType = await response.json();
+					setCourierPackages(result.packages);
 				} catch (error) {
 					console.error('Error fetching courier:', error);
 				} finally {
@@ -70,7 +71,8 @@ export default function CourierPage(): React.JSX.Element {
 			fetchCourierPackages();
 		}
 	}, [courierId]);
-	console.log(courierPackages);
+
+	console.log('Courier Packages:', courierPackages);
 
 	return (
 		<div className='flex flex-col gap-4'>
@@ -154,7 +156,9 @@ export default function CourierPage(): React.JSX.Element {
 								/>
 								PACKAGES ASSIGNED:
 							</div>
-							TODO: wyświetlanie paczek od kuriera
+							<PackagesAssignedToCourier
+								packages={courierPackages}
+							/>
 						</div>
 					</div>
 				</>

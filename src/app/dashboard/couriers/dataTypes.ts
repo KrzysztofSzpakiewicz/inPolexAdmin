@@ -72,3 +72,8 @@ export interface CourierDetailsProps {
 export interface PackagesDetailsProps {
 	stats: Stats;
 }
+
+//[courierId]/components/PackagesAssignedToCourier.tsx
+export interface PackagesAssignedToCourierProps {
+	packages: PackageType[];
+}
