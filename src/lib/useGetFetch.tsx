@@ -26,6 +26,7 @@ export default function useGetFetch<TResponse>(): UseGetFetchProps<TResponse> {
 
 				const { content }: { content: TResponse } =
 					await response.json();
+
 				setData(content);
 			} catch (err) {
 				console.error(err);
