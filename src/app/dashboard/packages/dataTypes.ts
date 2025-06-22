@@ -54,4 +54,19 @@ export type FetchedPackages = {
 	receiverAddress: Address;
 	plannedDeliveryDate: string;
 	deliveryTime: DeliveryTime;
+	packageStatus: PackageStatus;
 };
+
+export type PackageStatus =
+	| 'INITIALIZED'
+	| 'CREATED'
+	| 'PENDING'
+	| 'ASSIGNED_TO_COURIER'
+	| 'IN_TRANSIT'
+	| 'DELIVERED'
+	| 'FAILED'
+	| 'RETURNED';
+
+export interface PackageProps {
+	data: FetchedPackages;
+}
