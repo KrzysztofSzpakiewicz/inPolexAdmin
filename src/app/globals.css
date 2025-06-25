@@ -47,3 +47,14 @@ input[type='number']::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
+
+.date-input-light {
+}
+
+.date-input-light::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+}
+
+.date-input-light::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+}

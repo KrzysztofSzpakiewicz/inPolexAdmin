@@ -1,3 +1,5 @@
+import { FetchedPackages } from '../../packages/dataTypes';
+
 export interface UserFromServerType {
 	id: number;
 	firstName: string;
@@ -92,4 +94,9 @@ export interface LabelAdresType {
 	number: string;
 	postalCode: string;
 	apartment: string;
+}
+
+export interface UserPackagesProps {
+	packages: FetchedPackages[];
+	userId: number;
 }

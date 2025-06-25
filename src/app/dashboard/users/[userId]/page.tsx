@@ -9,6 +9,8 @@ import { AddressFromServerType, UserFromServerType } from './dataTypes';
 import Address from './components/Address';
 import UserDetails from './components/UserDetails';
 import EditUserModal from './components/EditUserModal';
+import { FetchedPackages } from '../../packages/dataTypes';
+import UserPackages from './components/UserPackages';
 const token: string | undefined = Cookies.get('authToken');
 
 export default function User(): React.JSX.Element {
@@ -49,9 +51,32 @@ export default function User(): React.JSX.Element {
 			}
 		}, [userId]);
 
+	const [packages, setPackages] = React.useState<FetchedPackages[]>([]);
+
+	const fetchUserPackages: () => Promise<void> = useCallback(async () => {
+		if (!userId) return;
+		try {
+			const res: Response = await fetch(`/api/package/user/${userId}`, {
+				method: 'GET',
+				headers: {
+					Accept: '*/*',
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+			const data: FetchedPackages[] = await res.json();
+			setPackages(data);
+		} catch (err) {
+			console.error('Error fetching user packages:', err);
+		}
+	}, [userId]);
+
+	console.log(packages);
+
 	useEffect(() => {
 		fetchUserData();
-	}, [fetchUserData]);
+		fetchUserPackages();
+	}, [fetchUserData, fetchUserPackages]);
 
 	const deleteUser: () => Promise<void> = async (): Promise<void> => {
 		console.log(fetchedUserData);
@@ -205,7 +230,7 @@ export default function User(): React.JSX.Element {
 							{fetchedUserData.lastName}
 						</p>
 					</div>
-					<div className='flex justify-between p-4'>
+					<div className='flex justify-between gap-4 p-4'>
 						<div className='flex w-2/5 flex-col gap-4'>
 							<div className='flex items-center gap-4 text-xl font-bold'>
 								<Image
@@ -239,7 +264,7 @@ export default function User(): React.JSX.Element {
 								}
 							)}
 						</div>
-						<div className='flex w-2/5 flex-col gap-4'>
+						<div className='flex w-3/5 flex-col gap-2'>
 							<div className='flex items-center gap-4 text-xl font-bold'>
 								<Image
 									alt='locationIcon'
@@ -249,8 +274,11 @@ export default function User(): React.JSX.Element {
 								/>
 								SHIPMENTS:
 							</div>
-							<div className='flex flex-wrap gap-2'>
-								{/* Rest of your shipments code */}
+							<div className='flex flex-wrap'>
+								<UserPackages
+									packages={packages}
+									userId={fetchedUserData.id}
+								/>
 							</div>
 						</div>
 					</div>
