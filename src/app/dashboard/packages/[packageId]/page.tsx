@@ -71,7 +71,7 @@ export default function Package(): React.JSX.Element {
 									Package status:
 								</p>
 								<p className='text-xl font-bold'>
-									{packages[0].packageStatus ?? 'N/A'}
+									{packages[0].status ?? 'N/A'}
 								</p>
 							</div>
 							<div className='flex items-center gap-4'>

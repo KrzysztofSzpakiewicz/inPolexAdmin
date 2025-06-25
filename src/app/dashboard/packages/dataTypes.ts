@@ -54,7 +54,7 @@ export type FetchedPackages = {
 	receiverAddress: Address;
 	plannedDeliveryDate: string;
 	deliveryTime: DeliveryTime;
-	packageStatus: PackageStatus;
+	status: PackageStatus;
 };
 
 export type PackageStatus =

@@ -18,7 +18,7 @@ export default function Package({ data }: PackageProps): React.JSX.Element {
 					</div>
 					<div className='flex w-full justify-between'>
 						<p>P. status:</p>
-						{data.packageStatus ?? 'N/A'}
+						{data.status ?? 'N/A'}
 					</div>
 					<div className='flex w-full justify-between'>
 						<p>Planed delivery:</p>
