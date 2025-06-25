@@ -70,3 +70,8 @@ export type PackageStatus =
 export interface PackageProps {
 	data: FetchedPackages;
 }
+
+export interface PackageUsersDetailsProps {
+	userData: User;
+	addressData: Address;
+}

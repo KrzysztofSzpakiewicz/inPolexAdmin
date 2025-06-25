@@ -12,7 +12,7 @@ export default function Packages(): React.JSX.Element {
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetch('/api/package', {
+		fetch('/api/package?page=0&size=100', {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -37,7 +37,7 @@ export default function Packages(): React.JSX.Element {
 				Packages:
 			</h2>
 
-			<div className='grid grid-cols-4'>
+			<div className='grid grid-cols-4 gap-3'>
 				{packages.map((pkg: FetchedPackages) => (
 					<Link href={`/dashboard/packages/${pkg.id}`} key={pkg.id}>
 						<Package data={pkg} />
