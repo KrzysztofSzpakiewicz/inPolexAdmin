@@ -1,0 +1,2 @@
+//komponnety na poziomie ich zastosowania w plikach
+//dodac osobny plik z ich typami
