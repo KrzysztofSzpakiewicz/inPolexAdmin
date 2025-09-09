@@ -43,7 +43,7 @@ export default function UserPackages({ packages, userId }: UserPackagesProps) {
 								<div className='flex flex-col'>
 									<div className=''>STATUS</div>
 									<div className='font-bold'>
-										{signlePackage.packageStatus ?? 'N/A'}
+										{signlePackage.status ?? 'N/A'}
 									</div>
 								</div>
 								{signlePackage.sender.id === userId ? (
