@@ -13,6 +13,17 @@ export default function Package(): React.JSX.Element {
 	const { packageId } = useParams();
 	const [packages, setPackages] = React.useState<FetchedPackages[]>([]);
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+	const [statusChanged, setStatusChanged] = React.useState<boolean>(false);
+	const statusOptions: string[] = [
+		'INITIALIZED',
+		'CREATED',
+		'PENDING',
+		'ASSIGNED_TO_COURIER',
+		'IN_TRANSIT',
+		'DELIVERED',
+		'FAILED',
+		'RETURNED',
+	];
 	useEffect(() => {
 		setIsLoading(true);
 		fetch(`/api/package?query=${packageId}&field=id&page=0&size=1`, {
@@ -22,8 +33,30 @@ export default function Package(): React.JSX.Element {
 		})
 			.then((res: Response) => res.json())
 			.then((data: FetchedPackages[]) => setPackages(data))
-			.finally(() => setIsLoading(false));
-	}, [packageId]);
+			.finally(() => {
+				setIsLoading(false);
+				setStatusChanged(false);
+			});
+	}, [packageId, statusChanged]);
+
+	const handleStatusChange: (
+		e: React.ChangeEvent<HTMLSelectElement>
+	) => Promise<void> = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const newStatus: string = e.target.value;
+		setIsLoading(true);
+		await fetch(
+			`/api/courier/packages/${packageId}/status?status=${newStatus}`,
+			{
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		setStatusChanged(true);
+		router.refresh();
+	};
 
 	return (
 		<div className=''>
@@ -73,6 +106,17 @@ export default function Package(): React.JSX.Element {
 								<p className='text-xl font-bold'>
 									{packages[0].status ?? 'N/A'}
 								</p>
+								<select
+									className='ml-4 rounded border p-2'
+									value={packages[0].status}
+									onChange={handleStatusChange}
+								>
+									{statusOptions.map((status: string) => (
+										<option key={status} value={status}>
+											{status}
+										</option>
+									))}
+								</select>
 							</div>
 							<div className='flex items-center gap-4'>
 								<p className='min-w-32 text-xl font-bold'>
@@ -114,22 +158,25 @@ export default function Package(): React.JSX.Element {
 							</div>
 							<div className='flex gap-4'>
 								<p className='min-w-32'>Width:</p>
-								<p>
-									{packages[0]?.packageSize.dimensions.width}{' '}
+								<p className=''>
+									{packages[0]?.packageSize?.dimensions
+										?.width ?? 'N/A'}{' '}
 									cm
 								</p>
 							</div>
 							<div className='flex gap-4'>
 								<p className='min-w-32'>Height:</p>
-								<p>
-									{packages[0]?.packageSize.dimensions.height}{' '}
+								<p className=''>
+									{packages[0]?.packageSize?.dimensions
+										?.height ?? 'N/A'}{' '}
 									cm
 								</p>
 							</div>
 							<div className='flex gap-4'>
 								<p className='min-w-32'>Depth:</p>
-								<p>
-									{packages[0]?.packageSize.dimensions.depth}{' '}
+								<p className=''>
+									{packages[0]?.packageSize?.dimensions
+										?.depth ?? 'N/A'}{' '}
 									cm
 								</p>
 							</div>
@@ -165,7 +212,8 @@ export default function Package(): React.JSX.Element {
 							<div className='flex gap-4'>
 								<p className='min-w-32'>Time:</p>
 								<p>
-									{packages[0]?.deliveryTime.workDaysAmount}{' '}
+									{packages[0]?.deliveryTime
+										?.workDaysAmount ?? 'N/A'}{' '}
 									days
 								</p>
 							</div>
